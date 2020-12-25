@@ -4,11 +4,38 @@
   
     
     <entry>
+      <title>SpringMVC的执行流程</title>
+      <link href="2020/12/25/SpringMVC%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/"/>
+      <url>2020/12/25/SpringMVC%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h3 id="springmvc的执行流程图如下："><a href="#springmvc的执行流程图如下：" class="headerlink" title="springmvc的执行流程图如下："></a>springmvc的执行流程图如下：</h3><p><img src="/img/springmvc.png" loading="lazy"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Spring </category>
+          
+          <category> SpringMVC </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> springmvc </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Shiro</title>
       <link href="2020/12/25/Shiro/"/>
       <url>2020/12/25/Shiro/</url>
       
-        <content type="html"><![CDATA[<h1 id="权限的管理"><a href="#权限的管理" class="headerlink" title="权限的管理"></a>权限的管理</h1><h2 id="什么是权限管理"><a href="#什么是权限管理" class="headerlink" title="什么是权限管理"></a>什么是权限管理</h2><p>​         基本上涉及到用户参与的系统都要进行权限管理，权限管理属于系统安全的范畴，权限管理实现对用户访问系统的控制，按照安全规则或者<font colo="red">安全策略</font>控制用户可以访问而且只能访问自己被授权的资源。<br>​       权限管理包括用户 <strong>身份认证</strong>和<strong>授权</strong>两部分，简称<strong>认证授权</strong>。对于需要访问控制的资源用户首先经过身份认证，认证通过后用户具有该资源的访问权限方可访问。</p><h2 id="什么是身份认证"><a href="#什么是身份认证" class="headerlink" title="什么是身份认证"></a>什么是身份认证</h2><p>​         <strong>身份认证</strong>（登录），就是判断一个用户是否为合法用户的处理过程。最常用的简单身份认证方式是系统通过核对用户输入的用户名和口令，看其是否与系统中存储的该用户的用户名和口令一致，来判断用户身份是否正确。对于采用指纹等系统，则出示指纹；对于硬件Key等刷卡系统，则需要刷卡。</p><h2 id="什么是授权"><a href="#什么是授权" class="headerlink" title="什么是授权"></a>什么是授权</h2><p>​       <strong>授权</strong>，即访问控制，控制谁能访问哪些资源。主体进行身份认证后需要分配权限方可访问系统的资源，对于某些资源没有权限是无法访问的</p><h1 id="什么是-Shiro"><a href="#什么是-Shiro" class="headerlink" title="什么是 Shiro"></a>什么是 Shiro</h1><p>   Shiro是一个功能强大且易于使用的Java安全框架，它执行身份验证、授权、加密和会话管理。使用Shiro易于理解的APl，您可以快速轻松地保护任何应用程序一从最小的移动应用程序到最大的web和企业应用程序。Shiro是apache旗下一个开源框架，它将软件系统的安全认证相关的功能抽取出来，实现用户身份认证，权限授权、加密、会话管理等功能，组成了一个通用的安全认证框架。</p><p><img src="/img/shiro.png" loading="lazy"></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="权限的管理"><a href="#权限的管理" class="headerlink" title="权限的管理"></a>权限的管理</h1><h2 id="什么是权限管理"><a href="#什么是权限管理" class="headerlink" title="什么是权限管理"></a>什么是权限管理</h2><p>         基本上涉及到用户参与的系统都要进行权限管理，权限管理属于系统安全的范畴，权限管理实现对用户访问系统的控制，按照安全规则或者<font colo="red">安全策略</font>控制用户可以访问而且只能访问自己被授权的资源。<br>​       权限管理包括用户 <strong>身份认证</strong>和<strong>授权</strong>两部分，简称<strong>认证授权</strong>。对于需要访问控制的资源用户首先经过身份认证，认证通过后用户具有该资源的访问权限方可访问。</p><h2 id="什么是身份认证"><a href="#什么是身份认证" class="headerlink" title="什么是身份认证"></a>什么是身份认证</h2><p>​         <strong>身份认证</strong>（登录），就是判断一个用户是否为合法用户的处理过程。最常用的简单身份认证方式是系统通过核对用户输入的用户名和口令，看其是否与系统中存储的该用户的用户名和口令一致，来判断用户身份是否正确。对于采用指纹等系统，则出示指纹；对于硬件Key等刷卡系统，则需要刷卡。</p><h2 id="什么是授权"><a href="#什么是授权" class="headerlink" title="什么是授权"></a>什么是授权</h2><p>​       <strong>授权</strong>，即访问控制，控制谁能访问哪些资源。主体进行身份认证后需要分配权限方可访问系统的资源，对于某些资源没有权限是无法访问的</p><h1 id="什么是-Shiro"><a href="#什么是-Shiro" class="headerlink" title="什么是 Shiro"></a>什么是 Shiro</h1><p>   Shiro是一个功能强大且易于使用的Java安全框架，它执行身份验证、授权、加密和会话管理。使用Shiro易于理解的APl，您可以快速轻松地保护任何应用程序一从最小的移动应用程序到最大的web和企业应用程序。Shiro是apache旗下一个开源框架，它将软件系统的安全认证相关的功能抽取出来，实现用户身份认证，权限授权、加密、会话管理等功能，组成了一个通用的安全认证框架。</p><p><img src="/img/shiro.png" loading="lazy"></p>]]></content>
       
       
       <categories>
