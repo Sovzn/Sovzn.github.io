@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Linux进程管理</title>
+      <link href="2021/01/27/Linux%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"/>
+      <url>2021/01/27/Linux%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><blockquote><p>进程基本概念</p></blockquote><p>1.在Linux中，每一个程序都是有自己的一个进程，每一个进程都有一个id号。</p><p>2.每一个进程都有一个父进程。</p><p>3.进程有两种存在方式：前台！后天运行。</p><p>4.一般的话服务都是后台运行的，基本的程序都是天台运行的。</p><blockquote><p>命令</p></blockquote><h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><p><strong>ps</strong>： 查看当前系统中正在执行的各种进程的信息</p><p>参数：</p><ul><li><p>-a  显示当前终端运行的所有进程的信息、</p></li><li><p>-u 以当前用户的信息显示进程</p></li><li><p>-x 显示后台运行进程的参数</p><p> <img src="https://img-blog.csdnimg.cn/20210127170955939.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p></li></ul><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># ps -aux 查看所有的进程</span><span class="token comment"># | 为管道符    grep：查找文件中符号条件的字符串.</span><span class="token comment"># ps -aux|grep mysql  查看mysql相关的进程</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p> <img src="https://img-blog.csdnimg.cn/20210127171415647.png" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p><strong>ps -ef：可以查看父进程</strong></p><p> <img src="https://img-blog.csdnimg.cn/2021012717315934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> 也可以通过进程树来查看父进程:</p><p><strong>pstree</strong> </p><p>​        -p  显示父id</p><p>​        -u  显示用户组</p><p> <img src="https://img-blog.csdnimg.cn/20210127173447425.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><h2 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">kill</span> -9  进程id  <span class="token comment">#强制终止进程，一般不要随便终止进程</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Linux用户组管理和磁盘管理</title>
       <link href="2021/01/27/Linux%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86%E5%92%8C%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/"/>
       <url>2021/01/27/Linux%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86%E5%92%8C%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</url>
