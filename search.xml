@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>VMware中CentOS的本地网络配置</title>
+      <link href="2021/01/30/VMware%E4%B8%ADCentOS%E7%9A%84%E6%9C%AC%E5%9C%B0%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/"/>
+      <url>2021/01/30/VMware%E4%B8%ADCentOS%E7%9A%84%E6%9C%AC%E5%9C%B0%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="CentOS虚拟机本地网络配置"><a href="#CentOS虚拟机本地网络配置" class="headerlink" title="CentOS虚拟机本地网络配置"></a>CentOS虚拟机本地网络配置</h1><p><strong>1.需要保证Linux虚拟机和本机处于同一个网段。</strong></p><p>本机Windows：</p><p> <img src="https://img-blog.csdnimg.cn/20210130174612513.png" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p>Linux也必须要配置到对应的网段：比如192.168.0.110</p><p>虚拟机网络配置文件的位置：/etc/sysconfig/network-scripts</p><p> <img src="https://img-blog.csdnimg.cn/20210130175108407.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p> <strong>vim ifcfg-ens32 ：</strong><img src="https://img-blog.csdnimg.cn/20210130181102790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"></p><p><strong>2.确保网络适配器为桥接模式</strong></p><p> <img src="https://img-blog.csdnimg.cn/2021013018121272.png" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p> <strong>3.查看本机电脑所连接的网络的网卡信息</strong> <img src="https://img-blog.csdnimg.cn/20210130181840503.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p><strong>4.点击VMware的编辑，然后点击”虚拟网络编辑器”</strong></p><p>点击更改设置</p><p> <img src="https://img-blog.csdnimg.cn/20210130181557396.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p>选择本机网络连接所对应的网卡。  <img src="https://img-blog.csdnimg.cn/20210130181948477.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p><strong>查看虚拟机ip：</strong> </p><p><img src="https://img-blog.csdnimg.cn/2021013018134092.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"></p><p><strong>在本机ping虚拟机，可以ping通了</strong> </p><p><img src="https://img-blog.csdnimg.cn/20210130182609318.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"></p><p> <strong>虚拟机ping百度也可以ping通了</strong> <img src="https://img-blog.csdnimg.cn/20210130182800567.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTEwMDk0MA==,size_16,color_FFFFFF,t_70" alt="img" loading="lazy"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动" loading="lazy"> </p><p><strong>总结：</strong></p><p><font color='red'>确保虚拟机网络适配器为桥接模式，linux虚拟机与本机在同一网段，且虚拟机为dhcp模式，在虚拟机的”虚拟网络编辑器”中编辑，选择对应的网卡。</font></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>环境安装</title>
       <link href="2021/01/28/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
       <url>2021/01/28/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
