@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#6200ee"><meta name="author" content="Sovzn"><meta name="copyright" content="Sovzn"><meta name="generator" content="Hexo 5.3.0"><meta name="theme" content="hexo-theme-yun"><title>MySQL安装 | 大师兄</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.22/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="shortcut icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#6200ee"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"sovzn.github.io","root":"/","title":"大师兄的小破站","version":"1.3.0","mode":"auto","copycode":true,"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><meta name="description" content="glibc安装MySQL数据库MySQL glibc软件包获取MySQL的glibc版是由MySQL提供的经编译之后的软件包，可直接进行初始化使用，安装比较简单方便。 获取MySQL glibc软件包： 官网获取：https:&#x2F;&#x2F;www.mysql.com&#x2F; 选择版本：https:&#x2F;&#x2F;downloads.mysql.com&#x2F;archives&#x2F;community&#x2F; 安装（5.7）默认安装目录：&#x2F;us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL安装">
+<meta property="og:url" content="http://sovzn.github.io/2021/06/19/MySQL%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="大师兄">
+<meta property="og:description" content="glibc安装MySQL数据库MySQL glibc软件包获取MySQL的glibc版是由MySQL提供的经编译之后的软件包，可直接进行初始化使用，安装比较简单方便。 获取MySQL glibc软件包： 官网获取：https:&#x2F;&#x2F;www.mysql.com&#x2F; 选择版本：https:&#x2F;&#x2F;downloads.mysql.com&#x2F;archives&#x2F;community&#x2F; 安装（5.7）默认安装目录：&#x2F;us">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-19T10:17:30.000Z">
+<meta property="article:modified_time" content="2021-06-19T15:09:00.713Z">
+<meta property="article:author" content="Sovzn">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Sovzn"><img width="96" loading="lazy" src="/Yun.png" alt="Sovzn"><span class="site-author-status" title="永远相信美好的事情即将发生">😊</span></a><div class="site-author-name"><a href="/about/">Sovzn</a></div><a class="site-name" href="/about/site.html">大师兄</a><sub class="site-subtitle"></sub><div class="site-desciption">我只拥有你的月光,我要把它当作骄阳。</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">53</span></a></div><div class="site-state-item"><a href="/categories/" title="Categories"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">19</span></a></div><div class="site-state-item"><a href="/tags/" title="Tags"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">12</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="http://wpa.qq.com/msgrd?v=3&amp;uin=&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Twitter" target="_blank" style="color:#1da1f2"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-twitter-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send-plane-2-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/null" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#glibc%E5%AE%89%E8%A3%85MySQL%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">glibc安装MySQL数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-glibc%E8%BD%AF%E4%BB%B6%E5%8C%85%E8%8E%B7%E5%8F%96"><span class="toc-number">1.1.</span> <span class="toc-text">MySQL glibc软件包获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%EF%BC%885-7%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">安装（5.7）</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://Sovzn.github.io/2021/06/19/MySQL%E5%AE%89%E8%A3%85/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Sovzn"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="大师兄"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">MySQL安装</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2021-06-19 18:17:30" itemprop="dateCreated datePublished" datetime="2021-06-19T18:17:30+08:00">2021-06-19</time></div><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/Linux/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">Linux</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag" href="/tags/Linux/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Linux</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#6200ee;"><h1 id="glibc安装MySQL数据库"><a href="#glibc安装MySQL数据库" class="headerlink" title="glibc安装MySQL数据库"></a>glibc安装MySQL数据库</h1><h2 id="MySQL-glibc软件包获取"><a href="#MySQL-glibc软件包获取" class="headerlink" title="MySQL glibc软件包获取"></a>MySQL glibc软件包获取</h2><p>MySQL的glibc版是由MySQL提供的经编译之后的软件包，可直接进行初始化使用，安装比较简单方便。</p>
+<p><strong>获取MySQL glibc软件包：</strong></p>
+<p>官网获取：<a target="_blank" rel="noopener" href="https://www.mysql.com/">https://www.mysql.com/</a></p>
+<p>选择版本：<a target="_blank" rel="noopener" href="https://downloads.mysql.com/archives/community/">https://downloads.mysql.com/archives/community/</a></p>
+<h2 id="安装（5-7）"><a href="#安装（5-7）" class="headerlink" title="安装（5.7）"></a>安装（5.7）</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">默认安装目录：/usr/local/mysql
+数据存储目录：/usr/local/mysql/data
+端口：3306
+默认socket文件存储路径：/tmp/mysql.sock  用于C/S架构客户端与服务器端通信的套接字文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>安装步骤：</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#--------------第一步------------：</span>
+
+----1.上传软件包到Linux系统中的/usr/local/下
+----2.创建特殊的账号，叫做mysql<span class="token punctuation">(</span>所属组也是mysql<span class="token punctuation">)</span>
+<span class="token function">useradd</span> -r -s /sbin/nologin mysql
+
+<span class="token comment">#--------------第二步------------：</span>
+
+----1.解压MySQL压缩包
+<span class="token punctuation">[</span>root@VM-0-13-centos local<span class="token punctuation">]</span><span class="token comment">#tar -zxf mysql-5.7.11-linux-glibc2.5-x86_64.tar.gz</span>
+----2.删除压缩包：rm mysql-5.7.11-linux-glibc2.5-x86_64.tar.gz
+----3.将解压后的文件通过mv命令重命名为mysql
+<span class="token punctuation">[</span>root@VM-0-13-centos local<span class="token punctuation">]</span><span class="token comment"># mv mysql-5.7.11-linux-glibc2.5-x86_64 mysql</span>
+<span class="token punctuation">[</span>root@VM-0-13-centos local<span class="token punctuation">]</span><span class="token comment"># ls</span>
+bin  games    lib    libexec  qcloud  share  yd.socket.server
+etc  include  lib64  mysql    sbin    src
+
+----4.更改/usr/local/mysql目录权限，更改文件属主和属组都为mysql
+<span class="token punctuation">[</span>root@VM-0-13-centos /<span class="token punctuation">]</span><span class="token comment"># chown -R mysql.mysql /usr/local/mysql</span>
+----5.在mysql下创建数据仓库目录并更改权限
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment"># mkdir -p data/mysql</span>
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment"># chown mysql:mysql data</span>
+
+<span class="token comment">#--------------第三步--------------：</span>
+
+----1.初始化数据库
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment"># bin/mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/data/mysql</span>
+注意记录生成的临时密码：A temporary password is generated <span class="token keyword">for</span> root@localhost: <span class="token number">33</span>+ju<span class="token operator">&amp;</span>/4CdBl
+----2.配置参数
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment"># bin/mysql_ssl_rsa_setup  --datadir=data/mysql</span>
+
+<span class="token comment">#--------------第四步--------------：</span>
+
+修改系统文件
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment"># cd /usr/local/mysql/support-files</span>
+<span class="token punctuation">[</span>root@VM-0-13-centos support-files<span class="token punctuation">]</span><span class="token comment"># ls</span>
+magic  my-default.cnf  mysqld_multi.server  mysql-log-rotate  mysql.server
+<span class="token punctuation">[</span>root@VM-0-13-centos support-files<span class="token punctuation">]</span><span class="token comment"># cp my-default.cnf /etc/my.cnf</span>
+cp: overwrite ‘/etc/my.cnf’? y
+<span class="token punctuation">[</span>root@VM-0-13-centos support-files<span class="token punctuation">]</span><span class="token comment"># cp mysql.server /etc/init.d/mysql</span>
+
+<span class="token punctuation">[</span>root@VM-0-13-centos support-files<span class="token punctuation">]</span><span class="token comment"># vim /etc/init.d/mysql</span>
+-----修改以下内容：
+<span class="token assign-left variable">basedir</span><span class="token operator">=</span>/usr/local/mysql
+<span class="token assign-left variable">datadir</span><span class="token operator">=</span>/data/mysql
+
+<span class="token comment">#-------------第五步---------------：</span>
+
+启动mysql
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment">#  /etc/init.d/mysql start</span>
+Starting MySQL. SUCCESS<span class="token operator">!</span> 
+
+--登陆
+<span class="token punctuation">[</span>root@VM-0-13-centos mysql<span class="token punctuation">]</span><span class="token comment"># mysql -hlocalhost -uroot -p</span>
+　　--如果出现：-bash: mysql: <span class="token builtin class-name">command</span> not found
+　　--就执行： <span class="token comment"># ln -s /usr/local/mysql/bin/mysql /usr/bin --没有出现就不用执行</span>
+--输入第6步生成的临时密码
+
+<span class="token comment">#-------------第六步----------------：</span>
+
+ --修改密码：
+    
+mysql<span class="token operator">></span> <span class="token builtin class-name">set</span> <span class="token assign-left variable">password</span><span class="token operator">=</span>password<span class="token punctuation">(</span><span class="token string">'123456'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    --设置root账户的host地址（修改了才可以远程连接）
+mysql<span class="token operator">></span>grant all privileges on *.* to <span class="token string">'root'</span>@<span class="token string">'%'</span> identified by <span class="token string">'root'</span><span class="token punctuation">;</span>
+mysql<span class="token operator">></span>flush privileges<span class="token punctuation">;</span>
+    <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>添加系统路径</p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@VM-0-13-centos ~<span class="token punctuation">]</span><span class="token comment"># vim /etc/profile</span>
+添加：
+<span class="token builtin class-name">export</span> <span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span>/usr/local/mysql/bin:<span class="token environment constant">$PATH</span>
+<span class="token punctuation">[</span>root@VM-0-13-centos ~<span class="token punctuation">]</span><span class="token comment"># source /etc/profile</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>配置MySQL自启动</p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@VM-0-13-centos ~<span class="token punctuation">]</span><span class="token comment">#  chmod 755 /etc/init.d/mysql</span>
+<span class="token punctuation">[</span>root@VM-0-13-centos ~<span class="token punctuation">]</span><span class="token comment"># chkconfig --add mysql</span>
+<span class="token punctuation">[</span>root@VM-0-13-centos ~<span class="token punctuation">]</span><span class="token comment"># chkconfig --level 345 mysql on</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>补充</p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">--退出mysql命令窗口
+
+<span class="token comment">#exit</span>
+
+ --查看mysql状态
+
+<span class="token comment">#service mysql status</span>
+
+--停止mysql
+
+<span class="token comment">#service mysql stop</span>
+
+--启动mysql
+
+<span class="token comment">#service mysql start</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+</div><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="Donate" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hand-coin-line"></use></svg></span><div id="reward-comment">给个饭钱？</div><div id="qr" style="display:none;"><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/J2Sv6rVeLtAPiHx.jpg"><img loading="lazy" src="https://i.loli.net/2020/12/23/J2Sv6rVeLtAPiHx.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-alipay-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/4rBXF1deMD6KyN8.png"><img loading="lazy" src="https://i.loli.net/2020/12/23/4rBXF1deMD6KyN8.png" alt="QQ 支付" title="QQ 支付"></a><div><span style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/XvirFV3o6GyRMZU.png"><img loading="lazy" src="https://i.loli.net/2020/12/23/XvirFV3o6GyRMZU.png" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-pay-line"></use></svg></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author: </strong>Sovzn</li><li class="post-copyright-link"><strong>Post link: </strong><a href="http://sovzn.github.io/2021/06/19/MySQL%E5%AE%89%E8%A3%85/" title="MySQL安装">http://sovzn.github.io/2021/06/19/MySQL%E5%AE%89%E8%A3%85/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> unless otherwise stated.</li></ul></section></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2021/06/18/Zookeeper/" rel="next" title="Zookeeper"><span class="post-nav-text">Zookeeper</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/YunYouJun/yunyoujun.github.io/issues?q=is:issue+MySQL安装">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Sovzn</span></div><div class="live_time"><span>本博客已运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-04-12T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#6200ee" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="Search"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="Searching..." value=""></div><div id="local-search-result"></div></div></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
