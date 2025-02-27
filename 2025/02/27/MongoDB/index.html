@@ -1,0 +1,1026 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#6200ee"><meta name="author" content="Sovzn"><meta name="copyright" content="Sovzn"><meta name="generator" content="Hexo 5.3.0"><meta name="theme" content="hexo-theme-yun"><title>MongoDB | 大师兄</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.22/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="shortcut icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#6200ee"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"sovzn.github.io","root":"/","title":"大师兄的小破站","version":"1.3.0","mode":"auto","copycode":true,"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><meta name="description" content="MongoDB 文档地址: https:&#x2F;&#x2F;docs.mongodb.com&#x2F;manual&#x2F;  简介说明 官方 MongoDB是一个文档数据库，旨在方便应用开发和扩展。   百度百科   MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展高性能数据存储解决方案。 MongoDB是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB">
+<meta property="og:url" content="http://sovzn.github.io/2025/02/27/MongoDB/index.html">
+<meta property="og:site_name" content="大师兄">
+<meta property="og:description" content="MongoDB 文档地址: https:&#x2F;&#x2F;docs.mongodb.com&#x2F;manual&#x2F;  简介说明 官方 MongoDB是一个文档数据库，旨在方便应用开发和扩展。   百度百科   MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展高性能数据存储解决方案。 MongoDB是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214132120713.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214103912606.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214104000583.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214104027532.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214104107363.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214105137607.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214105628652.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214110042124.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214110307469.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214110427395.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214114636572.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214115055562.png">
+<meta property="og:image" content="d:/img/1740634630592.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214115339513.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211217094919116.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214120226543.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214120316227.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214120404239.png">
+<meta property="og:image" content="d:/img/1740636329258.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214123631600.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214125324193.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211220093934250.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211220122343526.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211220122531182.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214131110733.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/1740649372729.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211221201808467.png">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/replica-set-read-write-operations-primary.bakedsvg-20211214132813414.svg">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/replica-set-trigger-election.bakedsvg.svg">
+<meta property="og:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214150523282.png">
+<meta property="article:published_time" content="2025-02-27T10:04:57.000Z">
+<meta property="article:modified_time" content="2025-02-27T10:06:56.546Z">
+<meta property="article:author" content="Sovzn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sovzn.github.io/2025/02/27/MongoDB/img/image-20211214132120713.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Sovzn"><img width="96" loading="lazy" src="/Yun.png" alt="Sovzn"><span class="site-author-status" title="永远相信美好的事情即将发生">😊</span></a><div class="site-author-name"><a href="/about/">Sovzn</a></div><a class="site-name" href="/about/site.html">大师兄</a><sub class="site-subtitle"></sub><div class="site-desciption">我只拥有你的月光,我要把它当作骄阳。</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">88</span></a></div><div class="site-state-item"><a href="/categories/" title="Categories"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">28</span></a></div><div class="site-state-item"><a href="/tags/" title="Tags"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">16</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="http://wpa.qq.com/msgrd?v=3&amp;uin=&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Twitter" target="_blank" style="color:#1da1f2"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-twitter-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send-plane-2-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/null" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MongoDB"><span class="toc-number">1.</span> <span class="toc-text">MongoDB</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">1.1.1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2"><span class="toc-number">1.1.2.</span> <span class="toc-text">历史</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.2.</span> <span class="toc-text">应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.1.</span> <span class="toc-text">传统方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">注：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-mongosh-%E8%BF%9E%E6%8E%A5-MongoDB"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">使用 mongosh 连接 MongoDB</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text">Docker方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.</span> <span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93"><span class="toc-number">1.4.1.</span> <span class="toc-text">库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88"><span class="toc-number">1.4.2.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-number">1.4.3.</span> <span class="toc-text">文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.4.</span> <span class="toc-text">关系总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.5.</span> <span class="toc-text">基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88-1"><span class="toc-number">1.5.2.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3-1"><span class="toc-number">1.5.3.</span> <span class="toc-text">文档</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.</span> <span class="toc-text">文档查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">1.6.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E8%AF%AD%E6%B3%95"><span class="toc-number">1.6.2.</span> <span class="toc-text">对比语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AND"><span class="toc-number">1.6.3.</span> <span class="toc-text">AND</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OR"><span class="toc-number">1.6.4.</span> <span class="toc-text">OR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AND-%E5%92%8C-OR-%E8%81%94%E5%90%88"><span class="toc-number">1.6.5.</span> <span class="toc-text">AND 和 OR 联合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.6.</span> <span class="toc-text">数组中查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.7.</span> <span class="toc-text">模糊查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F"><span class="toc-number">1.6.8.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5"><span class="toc-number">1.6.9.</span> <span class="toc-text">分页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E6%9D%A1%E6%95%B0"><span class="toc-number">1.6.10.</span> <span class="toc-text">总条数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%87%8D"><span class="toc-number">1.6.11.</span> <span class="toc-text">去重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E8%BF%94%E5%9B%9E%E5%AD%97%E6%AE%B5"><span class="toc-number">1.6.12.</span> <span class="toc-text">指定返回字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type"><span class="toc-number">1.7.</span> <span class="toc-text">$type</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E-1"><span class="toc-number">1.7.1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.7.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-number">1.8.</span> <span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E-2"><span class="toc-number">1.8.1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.8.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-number">1.8.3.</span> <span class="toc-text">操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-number">1.8.4.</span> <span class="toc-text">复合索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88"><span class="toc-number">1.9.</span> <span class="toc-text">聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E-3"><span class="toc-number">1.9.1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="toc-number">1.9.2.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%81%9A%E5%90%88%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">1.9.3.</span> <span class="toc-text">常见聚合表达式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9D%83%E9%99%90"><span class="toc-number">1.10.</span> <span class="toc-text">开启远程连接权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8"><span class="toc-number">1.11.</span> <span class="toc-text">整合应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.11.1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C"><span class="toc-number">1.11.2.</span> <span class="toc-text">集合操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.11.3.</span> <span class="toc-text">相关注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E6%93%8D%E4%BD%9C"><span class="toc-number">1.11.4.</span> <span class="toc-text">文档操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">1.12.</span> <span class="toc-text">副本集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E-4"><span class="toc-number">1.12.1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Automatic-Failover"><span class="toc-number">1.12.2.</span> <span class="toc-text">Automatic Failover</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">1.12.3.</span> <span class="toc-text">搭建副本集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4"><span class="toc-number">1.13.</span> <span class="toc-text">分片集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E-5"><span class="toc-number">1.13.1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84"><span class="toc-number">1.13.2.</span> <span class="toc-text">架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA"><span class="toc-number">1.13.3.</span> <span class="toc-text">搭建</span></a></li></ol></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://Sovzn.github.io/2025/02/27/MongoDB/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Sovzn"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="大师兄"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">MongoDB</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2025-02-27 18:04:57" itemprop="dateCreated datePublished" datetime="2025-02-27T18:04:57+08:00">2025-02-27</time></div><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/MongoDB/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">MongoDB</span></a></span> > <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/MongoDB/MongoDB/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">MongoDB</span></a></span></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#6200ee;"><h1 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h1><ul>
+<li>文档地址: <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/">https://docs.mongodb.com/manual/</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><ul>
+<li><p>官方</p>
+<p>MongoDB是一个<code>文档数据库</code>，旨在方便应用开发和扩展。</p>
+<p><img src="img/image-20211214132120713.png" alt="image-20211214132120713" loading="lazy"></p>
+</li>
+<li><p>百度百科</p>
+</li>
+</ul>
+<p>MongoDB是一个<code>基于分布式文件存储的数据库</code>。由C++语言编写。旨在<code>为WEB应用提供可扩展高性能数据存储解决方案</code>。</p>
+<p>MongoDB是一个<code>介于关系数据库和非关系数据库</code>之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。他支持的数据结构非常松散，是类似json的bson格式，因此可以存储比较复杂的数据类型 。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，<code>几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引</code>。</p>
+<p>总结: mongoDB 是一个非关系型文档数据库</p>
+<h3 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h3><ul>
+<li>2009年2月，MongoDB数据库首次在数据库领域亮相，打破了关系型数据库一统天下的局面；</li>
+<li>2010年8月, MongoDB 1.6发布。这个版本最大的一个功能就是Sharding，自动分片</li>
+<li>2014年12月, MongoDB3.0发布。由于收购了WiredTiger 存储引擎，大幅提升了MongoDB的写入性能；</li>
+<li>2015年12月，3.2版本发布，开始支持了关系型数据库的核心功能：关联。你可以一次同时查询多个MongoDB的集合。</li>
+<li>2016年, MongoDB推出Atlas，在AWS、 Azure 和GCP上的MongoDB托管服务；</li>
+<li>2017年10月，MongoDB成功在纳斯达克敲钟，成为26年来第一家以数据库产品为主要业务的上市公司。</li>
+<li>2018年6月, MongoDB4.0 发布推出ACID事务支持，成为第一个支持强事务的NoSQL数据库；</li>
+<li>2018年–至今，MongoDB已经从一个在数据库领域籍籍无名的“小透明”，变成了话题度和热度都很高的“流量”数据库。</li>
+</ul>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li> 面向集合存储，易存储对象类型的数据</li>
+<li> 支持查询,以及动态查询</li>
+<li> 支持RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言</li>
+<li> 文件存储格式为BSON（一种JSON的扩展）</li>
+<li> 支持复制和故障恢复和分片</li>
+<li> 支持事务支持</li>
+<li> 索引 聚合 关联….</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>游戏应用：使用云数据库MongoDB作为游戏服务器的数据库存储用户信息。用户的游戏装备、积分等直接以内嵌文档的形式存储，方便进行查询与更新。</li>
+<li>物流应用：使用云数据库MongoDB存储订单信息，订单状态在运送过程中会不断更新，以云数据库MongoDB内嵌数组的形式来存储，一次查询就能将订单所有的变更读取出来，方便快捷且一目了然。</li>
+<li>社交应用：使用云数据库MongoDB存储用户信息以及用户发表的朋友圈信息，通过地理位置索引实现附近的人、地点等功能。并且，云数据库MongoDB非常适合用来存储聊天记录，因为它提供了非常丰富的查询，并在写入和读取方面都相对较快。</li>
+<li>视频直播：使用云数据库MongoDB存储用户信息、礼物信息等。</li>
+<li>大数据应用：使用云数据库MongoDB作为大数据的云存储系统，随时进行数据提取分析，掌握行业动态。</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="传统方式"><a href="#传统方式" class="headerlink" title="传统方式"></a>传统方式</h3><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 1.下载 MongoDB</span>
+<span class="token list punctuation">-</span> https://www.mongodb.com/try/download/community<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214103912606.png" alt="image-20211214103912606" loading="lazy"></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 2.将下载安装包上传到 linux 系统</span>
+<span class="token list punctuation">-</span> tar -zxf mongodb-linux-aarch64-ubuntu2004-5.0.5.tgz <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214104000583.png" alt="image-20211214104000583" loading="lazy"></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 3.查看安装目录</span>
+<span class="token list punctuation">-</span> ls
+	<span class="token code keyword">`bin`</span>目录   用来存放启动mongoDB的服务以及客户端链接的脚本文件等<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214104027532.png" alt="image-20211214104027532" loading="lazy"></p>
+<p><img src="img/image-20211214104107363.png" alt="image-20211214104107363" loading="lazy"></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 4.启动 MongoDB 服务</span>
+<span class="token list punctuation">-</span> ./mongod --port=27017 --dbpath=../data --logpath=../logs/mongo.log --fork
+	<span class="token code keyword">`--port`</span>    指定服务监听端口号 默认为 27017
+	<span class="token code keyword">`--dbpath`</span>  指定 mongodb 数据存放目录 注意：启动要求目录必须存在
+	<span class="token code keyword">`--logpath`</span> 指定 mongodb 日志文件存放位置 注意：启动要求目录必须存在<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214105137607.png" alt="image-20211214105137607" loading="lazy"></p>
+<p><code>注意: 由于指定日志文件因此启动时日志输出到日志中终端不显示任何日志</code></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 5.客户端连接</span>
+<span class="token list punctuation">-</span> ./mongo --port=27017<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214105628652.png" alt="image-20211214105628652" loading="lazy"></p>
+<h3 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h3><blockquote>
+<p> <font color='red'>在 MongoDB 6.0 及更高版本中，MongoDB 官方移除了 <code>mongo</code> shell 工具，并将其替换为 <code>mongosh</code>（MongoDB Shell）。因此，如果你下载的是 高于6. 0版本，<code>bin</code> 目录下确实不会有 <code>mongo</code> 文件，而是需要单独安装 <code>mongosh</code>。 </font></p>
+</blockquote>
+<ol>
+<li><p>访问 MongoDB 官方下载页面：<a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/shell">MongoDB Shell Download</a></p>
+</li>
+<li><p>验证安装：</p>
+<pre class="line-numbers language-none"><code class="language-none">mongosh --version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="使用-mongosh-连接-MongoDB"><a href="#使用-mongosh-连接-MongoDB" class="headerlink" title="使用 mongosh 连接 MongoDB"></a>使用 <code>mongosh</code> 连接 MongoDB</h4></li>
+</ol>
+<p><strong>安装完成后，你可以使用 <code>mongosh</code> 连接到 MongoDB 实例：</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">mongosh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>或者指定连接字符串：</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">mongosh &quot;mongodb:&#x2F;&#x2F;localhost:27017&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="Docker方式"><a href="#Docker方式" class="headerlink" title="Docker方式"></a>Docker方式</h3><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 1.拉取 mongodb 镜像</span>
+<span class="token list punctuation">-</span> docker pull mongo:5.0.5<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214110042124.png" alt="image-20211214110042124" loading="lazy"></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 2.运行 mongo 镜像</span>
+<span class="token list punctuation">-</span> docker run -d --name mongo --p 27017:27017 mongo:5.0.5<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214110307469.png" alt="image-20211214110307469" loading="lazy"></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 3.进入 mongo 容器</span>
+<span class="token list punctuation">-</span> docker exec -it bc6c bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="img/image-20211214110427395.png" alt="image-20211214110427395" loading="lazy"></p>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="库"><a href="#库" class="headerlink" title="库"></a>库<DataBase></h3><p>​    <code>mongodb中的库就类似于传统关系型数据库中库的概念，用来通过不同库隔离不同应用数据</code>。mongodb中可以建立多个数据库。每一个库都有自己的集合和权限，不同的数据库也放置在不同的文件中。默认的数据库为”test”，数据库存储在启动指定的data目录中。</p>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合<Collection></h3><p>​    <code>集合就是 MongoDB 文档组，类似于 RDBMS （关系数据库管理系统：Relational Database Management System)中的表的概念</code>。</p>
+<p>集合存在于数据库中，一个库中可以创建多个集合。每个集合没有固定的结构，这意味着你在对集合可以插入不同格式和类型的数据，但通常情况下我们插入集合的数据都会有一定的关联性。</p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档<Document></h3><p>文档集合中一条条记录，是一组键值(key-value)对(即 BSON)。MongoDB 的文档不需要设置相同的字段，并且相同的字段不需要相同的数据类型，这与关系型数据库有很大的区别，也是 MongoDB 非常突出的特点。</p>
+<p>一个简单的文档例子如下：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"site"</span><span class="token operator">:</span><span class="token string">"www.baizhiedu.xin"</span><span class="token punctuation">,</span> <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"编程不良人"</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="关系总结"><a href="#关系总结" class="headerlink" title="关系总结"></a>关系总结</h3><table>
+<thead>
+<tr>
+<th>RDBMS</th>
+<th>MongoDB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据库<database></td>
+<td>数据库<database></td>
+</tr>
+<tr>
+<td>表<table></td>
+<td>集合<collection></td>
+</tr>
+<tr>
+<td>行<row></td>
+<td>文档<document></td>
+</tr>
+<tr>
+<td>列<colume></td>
+<td>字段<field></td>
+</tr>
+</tbody></table>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h3 id="库-1"><a href="#库-1" class="headerlink" title="库"></a>库<database></h3><ul>
+<li><p>查看所有库</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> <span class="token keyword">show</span> <span class="token keyword">databases</span><span class="token punctuation">;</span> <span class="token operator">|</span> <span class="token keyword">show</span> dbs<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211214114636572.png" alt="image-20211214114636572" loading="lazy"></p>
+<p><code>注意:</code></p>
+<ul>
+<li>**<code>admin</code>**： 从权限的角度来看，这是”root”数据库。要是将一个用户添加到这个数据库，这个用户自动继承所有数据库的权限。一些特定的服务器端命令也只能从这个数据库运行，比如列出所有的数据库或者关闭服务器。</li>
+<li><strong><code>local</code></strong>: 这个数据永远不会被复制，可以用来存储限于本地单台服务器的任意集合</li>
+<li><strong><code>config</code></strong>: 当Mongo用于分片设置时，config数据库在内部使用，用于保存分片的相关信息。</li>
+</ul>
+</li>
+<li><p>创建数据库</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> <span class="token keyword">use</span> 库名    <span class="token comment">#不存在就创建并切换到该库</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211214115055562.png" loading="lazy"></p>
+<p>注意: use 代表创建并使用,<font color='red'><strong>当库中没有数据时默认不显示这个库</strong></font></p>
+<p><img src="D:/img/1740634630592.png" alt="1740634630592" loading="lazy"></p>
+</li>
+<li><p>删除数据库</p>
+<ul>
+<li><code>默认删除当前选中的库</code></li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>dropDatabase<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211214115339513.png" alt="image-20211214115339513" loading="lazy"></p>
+</li>
+<li><p>查看当前所在库</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211217094919116.png" alt="image-20211217094919116" loading="lazy"></p>
+</li>
+</ul>
+<h3 id="集合-1"><a href="#集合-1" class="headerlink" title="集合"></a>集合<Collection></h3><ul>
+<li><p>查看库中所有集合</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> <span class="token keyword">show</span> collections<span class="token punctuation">;</span> <span class="token operator">|</span> <span class="token keyword">show</span> <span class="token keyword">tables</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211214120226543.png" alt="image-20211214120226543" loading="lazy"></p>
+</li>
+<li><p>创建集合</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>createCollection<span class="token punctuation">(</span><span class="token string">'集合名称'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>options<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211214120316227.png" alt="image-20211214120316227" loading="lazy"></p>
+<p><code>options可以是如下参数：</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">类型</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">capped</td>
+<td align="left">布尔</td>
+<td align="left">（可选）如果为 true，则创建固定集合。固定集合是指有着固定大小的集合，当达到最大值时，它会自动覆盖最早的文档。 <strong>当该值为 true 时，必须指定 size 参数。</strong></td>
+</tr>
+<tr>
+<td align="left">size</td>
+<td align="left">数值</td>
+<td align="left">（可选）为固定集合指定一个最大值，即字节数。 <strong>如果 capped 为 true，也需要指定该字段。</strong></td>
+</tr>
+<tr>
+<td align="left">max</td>
+<td align="left">数值</td>
+<td align="left">（可选）指定固定集合中包含文档的最大数量。</td>
+</tr>
+</tbody></table>
+<p><font color='red'>    <strong>注意:当集合不存在时,向集合中插入文档也会自动创建该集合。</strong></font></p>
+</li>
+<li><p>删除集合</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token keyword">drop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="img/image-20211214120404239.png" alt="image-20211214120404239" loading="lazy"></p>
+</li>
+</ul>
+<h3 id="文档-1"><a href="#文档-1" class="headerlink" title="文档"></a>文档<document></h3><p>参考文档: <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/method/">https://docs.mongodb.com/manual/reference/method/</a></p>
+<ul>
+<li><p>插入文档</p>
+<ul>
+<li><p>单条文档</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123;<span class="token string">"name"</span>:<span class="token string">"编程不良人"</span><span class="token punctuation">,</span><span class="token string">"age"</span>:<span class="token number">23</span><span class="token punctuation">,</span><span class="token string">"bir"</span>:<span class="token string">"2012-12-12"</span>&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>多条文档</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>insertMany<span class="token punctuation">(</span>
+   <span class="token punctuation">[</span> <span class="token operator">&lt;</span>document <span class="token number">1</span><span class="token operator">></span> <span class="token punctuation">,</span> <span class="token operator">&lt;</span>document <span class="token number">2</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+   &#123;
+ 			writeConcern: <span class="token number">1</span><span class="token punctuation">,</span><span class="token comment">//写入策略，默认为 1，即要求确认写操作，0 是不要求。</span>
+      ordered: <span class="token boolean">true</span> <span class="token comment">//指定是否按顺序写入，默认 true，按顺序写入。</span>
+   &#125;
+<span class="token punctuation">)</span>
+<span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  	&#123;<span class="token string">"name"</span>:<span class="token string">"不良人"</span><span class="token punctuation">,</span><span class="token string">"age"</span>:<span class="token number">23</span><span class="token punctuation">,</span><span class="token string">"bir"</span>:<span class="token string">"2012-12-12"</span>&#125;<span class="token punctuation">,</span>
+  	&#123;<span class="token string">"name"</span>:<span class="token string">"小黑"</span><span class="token punctuation">,</span><span class="token string">"age"</span>:<span class="token number">25</span><span class="token punctuation">,</span><span class="token string">"bir"</span>:<span class="token string">"2012-12-12"</span>&#125;
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>mongodb还支持脚本方式</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    db<span class="token punctuation">.</span>users<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"_id"</span><span class="token operator">:</span>i<span class="token punctuation">,</span><span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"不良人_"</span><span class="token operator">+</span>i<span class="token punctuation">,</span><span class="token string">"age"</span><span class="token operator">:</span><span class="token number">23</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>注意:在 mongodb 中每个文档都会有一个_id作为唯一标识,_id默认会自动生成如果手动指定将使用手动指定的值作为_id 的值。</code></p>
+</li>
+</ul>
+</li>
+<li><p>查询所有</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>删除文档</p>
+<pre class="line-numbers language-none"><code class="language-none">db.集合名称.remove() &#x2F;&#x2F;删除所有
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>
+   <span class="token operator">&lt;</span>query<span class="token operator">></span><span class="token punctuation">,</span>
+   &#123;
+     justOne: <span class="token operator">&lt;</span><span class="token keyword">boolean</span><span class="token operator">></span><span class="token punctuation">,</span>
+     writeConcern: <span class="token operator">&lt;</span>document<span class="token operator">></span>
+   &#125;
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li><strong>query</strong> :<code>可选</code>删除的文档的条件。</li>
+<li><strong>justOne</strong> : <code>可选</code>如果设为 true 或 1，则只删除一个文档，如果不设置该参数，或使用默认值 false，则删除所有匹配条件的文档。</li>
+<li><strong>writeConcern</strong> :<code>可选</code>抛出异常的级别。</li>
+</ul>
+<p><img src="D:/img/1740636329258.png" alt="1740636329258" loading="lazy"></p>
+</li>
+<li><p>更新文档</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>
+   <span class="token operator">&lt;</span>query<span class="token operator">></span><span class="token punctuation">,</span>
+   <span class="token operator">&lt;</span><span class="token keyword">update</span><span class="token operator">></span><span class="token punctuation">,</span>
+   &#123;
+     upsert: <span class="token operator">&lt;</span><span class="token keyword">boolean</span><span class="token operator">></span><span class="token punctuation">,</span>
+     multi: <span class="token operator">&lt;</span><span class="token keyword">boolean</span><span class="token operator">></span><span class="token punctuation">,</span>
+     writeConcern: <span class="token operator">&lt;</span>document<span class="token operator">></span>
+   &#125;
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li><strong>query</strong> : update的查询条件，类似sql update查询内where后面的。</li>
+<li><strong>update</strong> : update的对象和一些更新的操作符（如$,$inc…）等，也可以理解为sql update查询内set后面的</li>
+<li><strong>upsert</strong> : <code>可选</code>，这个参数的意思是，如果不存在要更新的记录，是否插入<code>&lt;query&gt;</code>条件作为一条新记录,true为插入，默认是false，不插入。</li>
+<li><strong>multi</strong> : <code>可选</code>，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。</li>
+<li><strong>writeConcern</strong> :<code>可选</code>，抛出异常的级别。</li>
+</ul>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token list punctuation">-</span> db.集合名称.update(&#123;"name":"zhangsan"&#125;,&#123;name:"11",bir:new date()&#125;) 
+	<span class="token code keyword">`老版本 ：这个更新是将符合条件的全部更新成后面的文档,相当于先删除在更新   `</span>
+<span class="token list punctuation">-</span> db.集合名称.update(&#123;"name":"xiaohei"&#125;,&#123;$set:&#123;name:"mingming"&#125;&#125;)
+	<span class="token code keyword">`保留原来数据更新,但是只更新符合条件的第一条数据`</span>
+<span class="token list punctuation">-</span> db.集合名称.update(&#123;name:”小黑”&#125;,&#123;$set:&#123;name:”小明”&#125;&#125;,&#123;multi:true&#125;)		
+	<span class="token code keyword">`保留原来数据更新,更新符合条件的所有数据`</span>
+<span class="token list punctuation">-</span> db.集合名称.update(&#123;name:”小黑”&#125;,&#123;$set:&#123;name:”小明”&#125;&#125;,&#123;multi:true,upsert:true&#125;)
+	`保留原来数据更新,更新符合条件的所有数据 没有条件符合时插入数据
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>注意：</strong></p>
+<blockquote>
+<p>在 MongoDB 的老版本中（例如 3.x 或更早版本），确实允许直接用 <code>&#123; age: 28 &#125;</code> 的方式更新文档，而不需要使用原子操作符（如 <code>$set</code>）。这种写法会将匹配到的文档替换为新的文档内容。</p>
+</blockquote>
+<p>Javascript深色版本</p>
+<pre class="line-numbers language-none"><code class="language-none">db.users.update(
+  &#123; &quot;name&quot;: &quot;shiyaoc&quot; &#125;,  &#x2F;&#x2F; 查询条件
+  &#123; age: 28 &#125;             &#x2F;&#x2F; 新文档
+);
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码的作用是：**将匹配到的文档完全替换为 <code>&#123; age: 28 &#125;</code>**。这意味着除了 <code>age</code> 字段外，原文档中的其他字段都会被删除。</p>
+<blockquote>
+<p> 新版本的变化</p>
+</blockquote>
+<p>从 MongoDB 4.2 开始，<code>update</code> <font color='red'>方法强制要求使用原子操作符</font>（如 <code>$set</code>、<code>$inc</code> 等）来明确指定更新行为。如果你直接传递一个普通的对象（如 <code>&#123; age: 28 &#125;</code>），MongoDB 会抛出错误：</p>
+<pre class="line-numbers language-none"><code class="language-none">MongoInvalidArgumentError: Update document requires atomic operators
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这是为了防止开发者误操作导致数据丢失或意外替换整个文档。</p>
+</li>
+</ul>
+<pre class="line-numbers language-none"><code class="language-none">db.users.update(
+  &#123; &quot;name&quot;: &quot;shiyaoc&quot; &#125;,  &#x2F;&#x2F; 查询条件：匹配 name 为 &quot;shiyaoc&quot; 的文档
+  &#123; $set: &#123; age: 28 &#125; &#125;   &#x2F;&#x2F; 更新操作：使用 $set 操作符设置 age 字段为 28
+);
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li><strong>查询条件</strong>：<ul>
+<li><code>&#123; &quot;name&quot;: &quot;shiyaoc&quot; &#125;</code> 是用于匹配文档的查询条件。</li>
+<li>MongoDB 会根据这个条件找到对应的文档。</li>
+</ul>
+</li>
+<li><strong>更新操作</strong>：<ul>
+<li><code>&#123; $set: &#123; age: 28 &#125; &#125;</code> 使用了 <code>$set</code> 原子操作符，表示将 <code>age</code> 字段设置为 <code>28</code>。</li>
+<li>如果不使用 <code>$set</code>，MongoDB 会认为你试图用整个新文档替换原有文档，这通常不是我们想要的行为。</li>
+</ul>
+</li>
+</ol>
+<p><strong>其他常用原子操作符</strong></p>
+<ul>
+<li><p><strong><code>$inc</code></strong>: 对数值字段进行增减操作。</p>
+<pre class="line-numbers language-none"><code class="language-none">db.users.update(&#123; &quot;name&quot;: &quot;shiyaoc&quot; &#125;, &#123; $inc: &#123; age: 1 &#125; &#125;);
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>上述代码会将 <code>age</code> 字段的值加 1。</p>
+</li>
+<li><p><strong><code>$unset</code></strong>: 删除指定字段。</p>
+<pre class="line-numbers language-none"><code class="language-none">db.users.update(&#123; &quot;name&quot;: &quot;shiyaoc&quot; &#125;, &#123; $unset: &#123; age: &quot;&quot; &#125; &#125;);
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>上述代码会删除 <code>age</code> 字段。</p>
+</li>
+<li><p><strong><code>$push</code></strong>: 向数组字段添加元素。</p>
+<pre class="line-numbers language-none"><code class="language-none">db.users.update(&#123; &quot;name&quot;: &quot;shiyaoc&quot; &#125;, &#123; $push: &#123; hobbies: &quot;reading&quot; &#125; &#125;);
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>​        上述代码会在 <code>hobbies</code> 数组中添加 <code>&quot;reading&quot;</code>。 </p>
+</li>
+</ul>
+<h2 id="文档查询"><a href="#文档查询" class="headerlink" title="文档查询"></a>文档查询</h2><p><strong>MongoDB 查询文档使用 find() 方法。find() 方法以非结构化的方式来显示所有文档。</strong></p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span>query<span class="token punctuation">,</span> projection<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><strong>query</strong> ：可选，使用查询操作符指定查询条件</li>
+<li><strong>projection</strong> ：可选，使用投影操作符指定返回的键。查询时返回文档中所有键值， 只需省略该参数即可（默认省略）。</li>
+</ul>
+<p>如果你需要以易读的方式来读取数据，可以使用 pretty() 方法，语法格式如下：</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>注意: pretty() 方法以格式化的方式来显示所有文档。</code></p>
+<h3 id="对比语法"><a href="#对比语法" class="headerlink" title="对比语法"></a>对比语法</h3><p>如果你熟悉常规的 SQL 数据，通过下表可以更好的理解 MongoDB 的条件语句查询：</p>
+<p><img src="img/image-20211214123631600.png" alt="image-20211214123631600" loading="lazy"></p>
+<h3 id="AND"><a href="#AND" class="headerlink" title="AND"></a>AND</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;key1:value1<span class="token punctuation">,</span> key2:value2<span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>类似于 WHERE 语句：WHERE key1=value1 AND key2=value2</code></p>
+<h3 id="OR"><a href="#OR" class="headerlink" title="OR"></a>OR</h3><p>MongoDB OR 条件语句使用了关键字 <strong>$or</strong>,语法格式如下：</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span>
+   &#123;
+      $<span class="token operator">or</span>: <span class="token punctuation">[</span>
+         &#123;key1: value1&#125;<span class="token punctuation">,</span> &#123;key2:value2&#125;
+      <span class="token punctuation">]</span>
+   &#125;
+<span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>类似于 WHERE 语句：WHERE key1=value1 or key2=value2</code></p>
+<h3 id="AND-和-OR-联合"><a href="#AND-和-OR-联合" class="headerlink" title="AND 和 OR 联合"></a>AND 和 OR 联合</h3><p><code>类似SQL语句为：&#39;where age &gt;50 AND (name = &#39;编程不良人&#39; OR name = &#39;MongoDB&#39;)&#39;</code></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;
+     <span class="token string">"age"</span>: &#123;$gt:<span class="token number">50</span>&#125;<span class="token punctuation">,</span> 
+    $<span class="token operator">or</span>: <span class="token punctuation">[</span>
+    &#123;<span class="token string">"name"</span>: <span class="token string">"编程不良人"</span>&#125;<span class="token punctuation">,</span>
+    &#123;<span class="token string">"name"</span>: <span class="token string">"MongoDB"</span>&#125;<span class="token punctuation">]</span>
+           &#125;
+              <span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="数组中查询"><a href="#数组中查询" class="headerlink" title="数组中查询"></a>数组中查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 测试数据</span>
+<span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123; <span class="token string">"_id"</span> : <span class="token number">11</span><span class="token punctuation">,</span> <span class="token string">"age"</span> : <span class="token number">29</span><span class="token punctuation">,</span> <span class="token string">"likes"</span> : <span class="token punctuation">[</span> <span class="token string">"看电视"</span><span class="token punctuation">,</span> <span class="token string">"读书xx"</span><span class="token punctuation">,</span> <span class="token string">"美女"</span> <span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"name"</span> : <span class="token string">"不良人_xx_11"</span> &#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 执行数组查询</span>
+<span class="token operator">></span> db<span class="token punctuation">.</span>users<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;likes:<span class="token string">"看电视"</span>&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- $size 按照数组长度查询</span>
+<span class="token operator">></span> db<span class="token punctuation">.</span>users<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;likes:&#123;$size:<span class="token number">3</span>&#125;&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h3><p><code>类似 SQL 中为 &#39;where name like &#39;%name%&#39;&#39;</code></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>users<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;likes:<span class="token operator">/</span>良<span class="token operator">/</span>&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>注意:在 mongoDB 中使用正则表达式可以是实现近似模糊查询功能</code></p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span>&#123;name:<span class="token number">1</span><span class="token punctuation">,</span>age:<span class="token number">1</span>&#125;<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token operator">-</span> <span class="token number">1</span> 升序  <span class="token operator">-</span><span class="token number">1</span> 降序
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>类似 SQL 语句为: &#39;order by name,age&#39;</code></p>
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span>&#123;条件&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span>skip<span class="token punctuation">(</span><span class="token keyword">start</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">limit</span><span class="token punctuation">(</span><span class="token keyword">rows</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>类似于 SQL 语句为: &#39;limit start,rows&#39;</code></p>
+<h3 id="总条数"><a href="#总条数" class="headerlink" title="总条数"></a>总条数</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;<span class="token string">"name"</span>:<span class="token string">"编程不良人"</span>&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>类似于 SQL 语句为: &#39;select count(id) from ....&#39;</code></p>
+<h3 id="去重"><a href="#去重" class="headerlink" title="去重"></a>去重</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span><span class="token keyword">distinct</span><span class="token punctuation">(</span><span class="token string">'字段'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>类似于 SQL 语句为: &#39;select distinct name from ....&#39;</code></p>
+<h3 id="指定返回字段"><a href="#指定返回字段" class="headerlink" title="指定返回字段"></a>指定返回字段</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;条件&#125;<span class="token punctuation">,</span>&#123;name:<span class="token number">1</span><span class="token punctuation">,</span>age:<span class="token number">1</span>&#125;<span class="token punctuation">)</span> 
+<span class="token operator">-</span> 参数<span class="token number">2</span>: <span class="token number">1</span> 返回  <span class="token number">0</span> 不返回    <span class="token punctuation">`</span>注意:<span class="token number">1</span>和<span class="token number">0</span>不能同时使用<span class="token punctuation">`</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="type"><a href="#type" class="headerlink" title="$type"></a>$type</h2><h3 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h3><p>$type操作符是基于BSON类型来检索集合中匹配的数据类型，并返回结果。</p>
+<p>MongoDB 中可以使用的类型如下表所示：</p>
+<p><img src="img/image-20211214125324193.png" alt="image-20211214125324193" loading="lazy"></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>col<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123;
+    title: <span class="token string">'PHP 教程'</span><span class="token punctuation">,</span> 
+    description: <span class="token string">'PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言。'</span><span class="token punctuation">,</span>
+    <span class="token keyword">by</span>: <span class="token string">'编程不良人'</span><span class="token punctuation">,</span>
+    url: <span class="token string">'http://www.baizhiedu.xin'</span><span class="token punctuation">,</span>
+    tags: <span class="token punctuation">[</span><span class="token string">'php'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    likes: <span class="token number">200</span>
+&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token operator">></span> db<span class="token punctuation">.</span>col<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123;
+    title: <span class="token string">'Java 教程'</span><span class="token punctuation">,</span> 
+    description: <span class="token string">'Java 是由Sun Microsystems公司于1995年5月推出的高级程序设计语言。'</span><span class="token punctuation">,</span>
+    <span class="token keyword">by</span>: <span class="token string">'编程不良人'</span><span class="token punctuation">,</span>
+    url: <span class="token string">'http://www.baizhiedu.xin'</span><span class="token punctuation">,</span>
+    tags: <span class="token punctuation">[</span><span class="token string">'java'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    likes: <span class="token number">550</span>
+&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token operator">></span> db<span class="token punctuation">.</span>col<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123;
+    title: <span class="token string">'MongoDB 教程'</span><span class="token punctuation">,</span> 
+    description: <span class="token string">'MongoDB 是一个 Nosql 数据库'</span><span class="token punctuation">,</span>
+    <span class="token keyword">by</span>: <span class="token string">'编程不良人'</span><span class="token punctuation">,</span>
+    url: <span class="token string">'http://www.baizhiedu.xin'</span><span class="token punctuation">,</span>
+    tags: <span class="token punctuation">[</span><span class="token string">'mongodb'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    likes: <span class="token number">100</span>
+&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token operator">></span> db<span class="token punctuation">.</span>col<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123;
+    title: <span class="token number">2233</span><span class="token punctuation">,</span> 
+    description: <span class="token string">'2233 是一个 B站的'</span><span class="token punctuation">,</span>
+    <span class="token keyword">by</span>: <span class="token string">'编程不良人'</span><span class="token punctuation">,</span>
+    url: <span class="token string">'http://www.baizhiedu.xin'</span><span class="token punctuation">,</span>
+    tags: <span class="token punctuation">[</span><span class="token string">'2233'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    likes: <span class="token number">100</span>
+&#125;<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>如果想获取 “col” 集合中 title 为 String 的数据，你可以使用以下命令：</li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">db<span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;<span class="token string">"title"</span> : &#123;$<span class="token keyword">type</span> : <span class="token number">2</span>&#125;&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+或
+db<span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;<span class="token string">"title"</span> : &#123;$<span class="token keyword">type</span> : <span class="token string">'string'</span>&#125;&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>如果想获取 “col” 集合中 tags 为 Array 的数据，你可以使用以下命令：</li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">dge
+或
+db<span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;<span class="token string">"tags"</span> : &#123;$<span class="token keyword">type</span> : <span class="token string">'array'</span>&#125;&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span>pretty<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引<index></h2><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/indexes/">https://docs.mongodb.com/manual/indexes/</a></p>
+<h3 id="说明-2"><a href="#说明-2" class="headerlink" title="说明"></a>说明</h3><p>索引通常能够极大的提高查询的效率，如果没有索引，MongoDB在读取数据时必须扫描集合中的每个文件并选取那些符合查询条件的记录。这种扫描全集合的查询效率是非常低的，特别在处理大量的数据时，查询可以要花费几十秒甚至几分钟，这对网站的性能是非常致命的。索引是特殊的数据结构，索引存储在一个易于遍历读取的数据集合中，索引是对数据库表中一列或多列的值进行排序的一种结构。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="img/image-20211220093934250.png" alt="image-20211220093934250" loading="lazy"></p>
+<p>从根本上说，MongoDB中的索引与其他数据库系统中的索引类似。MongoDB在集合层面上定义了索引，并支持对MongoDB集合中的任何字段或文档的子字段进行索引。</p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>0、创建索引</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>createIndex<span class="token punctuation">(</span><span class="token keyword">keys</span><span class="token punctuation">,</span> options<span class="token punctuation">)</span>
+<span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>createIndex<span class="token punctuation">(</span>&#123;<span class="token string">"title"</span>:<span class="token number">1</span>&#125;<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>说明: 语法中 Key 值为你要创建的索引字段，1 为指定按升序创建索引，如果你想按降序来创建索引指定为 -1 即可。</code></p>
+<p>createIndex() 接收可选参数，可选参数列表如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Parameter</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>background</code></td>
+<td align="left">Boolean</td>
+<td align="left">建索引过程会阻塞其它数据库操作，background可指定以后台方式创建索引，即增加 “background” 可选参数。 “background” 默认值为<strong>false</strong>。</td>
+</tr>
+<tr>
+<td align="left"><code>unique</code></td>
+<td align="left">Boolean</td>
+<td align="left">建立的索引是否唯一。指定为true创建唯一索引。默认值为<strong>false</strong>.</td>
+</tr>
+<tr>
+<td align="left"><code>name</code></td>
+<td align="left">string</td>
+<td align="left">索引的名称。如果未指定，MongoDB的通过连接索引的字段名和排序顺序生成一个索引名称。</td>
+</tr>
+<tr>
+<td align="left">sparse</td>
+<td align="left">Boolean</td>
+<td align="left">对文档中不存在的字段数据不启用索引；这个参数需要特别注意，如果设置为true的话，在索引字段中不会查询出不包含对应字段的文档.。默认值为 <strong>false</strong>.</td>
+</tr>
+<tr>
+<td align="left"><code>expireAfterSeconds</code></td>
+<td align="left">integer</td>
+<td align="left">指定一个以秒为单位的数值，完成 TTL设定，设定集合的生存时间。</td>
+</tr>
+<tr>
+<td align="left"><code>v</code></td>
+<td align="left">index version</td>
+<td align="left">索引的版本号。默认的索引版本取决于mongod创建索引时运行的版本。</td>
+</tr>
+<tr>
+<td align="left">weights</td>
+<td align="left">document</td>
+<td align="left">索引权重值，数值在 1 到 99,999 之间，表示该索引相对于其他索引字段的得分权重。</td>
+</tr>
+<tr>
+<td align="left">default_language</td>
+<td align="left">string</td>
+<td align="left">对于文本索引，该参数决定了停用词及词干和词器的规则的列表。 默认为英语</td>
+</tr>
+<tr>
+<td align="left">language_override</td>
+<td align="left">string</td>
+<td align="left">对于文本索引，该参数指定了包含在文档中的字段名，语言覆盖默认的language，默认值为 language.</td>
+</tr>
+</tbody></table>
+<p>1、查看集合索引</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>getIndexes<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2、查看集合索引大小</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>totalIndexSize<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3、删除集合所有索引</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>dropIndexes<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4、删除集合指定索引</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>dropIndex<span class="token punctuation">(</span><span class="token string">"索引名称"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="复合索引"><a href="#复合索引" class="headerlink" title="复合索引"></a>复合索引</h3><p>​    说明: 一个索引的值是由多个 key 进行维护的索引的称之为复合索引</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>createIndex<span class="token punctuation">(</span>&#123;<span class="token string">"title"</span>:<span class="token number">1</span><span class="token punctuation">,</span><span class="token string">"description"</span>:<span class="token operator">-</span><span class="token number">1</span>&#125;<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>​    <code>注意: mongoDB 中复合索引和传统关系型数据库一致都是左前缀原则</code><img src="img/image-20211220122343526.png" alt="image-20211220122343526" loading="lazy"></p>
+<p><img src="img/image-20211220122531182.png" alt="image-20211220122531182" loading="lazy"></p>
+<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合<aggregate></h2><h3 id="说明-3"><a href="#说明-3" class="headerlink" title="说明"></a>说明</h3><p>MongoDB 中聚合(aggregate)主要用于处理数据(诸如统计平均值，求和等)，并返回计算后的数据结果。有点类似 <strong>SQL</strong> 语句中的 *<em>count(</em>)**。</p>
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">&#123;
+   title: <span class="token string">'MongoDB Overview'</span><span class="token punctuation">,</span> 
+   description: <span class="token string">'MongoDB is no sql database'</span><span class="token punctuation">,</span>
+   by_user: <span class="token string">'runoob.com'</span><span class="token punctuation">,</span>
+   url: <span class="token string">'http://www.runoob.com'</span><span class="token punctuation">,</span>
+   tags: <span class="token punctuation">[</span><span class="token string">'mongodb'</span><span class="token punctuation">,</span> <span class="token string">'database'</span><span class="token punctuation">,</span> <span class="token string">'NoSQL'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   likes: <span class="token number">100</span>
+&#125;<span class="token punctuation">,</span>
+&#123;
+   title: <span class="token string">'NoSQL Overview'</span><span class="token punctuation">,</span> 
+   description: <span class="token string">'No sql database is very fast'</span><span class="token punctuation">,</span>
+   by_user: <span class="token string">'runoob.com'</span><span class="token punctuation">,</span>
+   url: <span class="token string">'http://www.runoob.com'</span><span class="token punctuation">,</span>
+   tags: <span class="token punctuation">[</span><span class="token string">'mongodb'</span><span class="token punctuation">,</span> <span class="token string">'database'</span><span class="token punctuation">,</span> <span class="token string">'NoSQL'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   likes: <span class="token number">10</span>
+&#125;<span class="token punctuation">,</span>
+&#123;
+   title: <span class="token string">'Neo4j Overview'</span><span class="token punctuation">,</span> 
+   description: <span class="token string">'Neo4j is no sql database'</span><span class="token punctuation">,</span>
+   by_user: <span class="token string">'Neo4j'</span><span class="token punctuation">,</span>
+   url: <span class="token string">'http://www.neo4j.com'</span><span class="token punctuation">,</span>
+   tags: <span class="token punctuation">[</span><span class="token string">'neo4j'</span><span class="token punctuation">,</span> <span class="token string">'database'</span><span class="token punctuation">,</span> <span class="token string">'NoSQL'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   likes: <span class="token number">750</span>
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在我们通过以上集合计算每个作者所写的文章数，使用aggregate()计算结果如下：</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> db<span class="token punctuation">.</span>集合名称<span class="token punctuation">.</span>aggregate<span class="token punctuation">(</span><span class="token punctuation">[</span>&#123;$<span class="token keyword">group</span> : &#123;_id : <span class="token string">"$by_user"</span><span class="token punctuation">,</span> num_tutorial : &#123;$sum : <span class="token number">1</span>&#125;&#125;&#125;<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>num_tutorial : 相当于变量名，存放每条聚合结果</p>
+<p><code>_id</code> <font color='red'>为分组标识符，不是文档主key</font></p>
+<h3 id="常见聚合表达式"><a href="#常见聚合表达式" class="headerlink" title="常见聚合表达式"></a>常见聚合表达式</h3><p><img src="img/image-20211214131110733.png" alt="image-20211214131110733" loading="lazy"></p>
+<h2 id="开启远程连接权限"><a href="#开启远程连接权限" class="headerlink" title="开启远程连接权限"></a>开启远程连接权限</h2><p>注：默认启动的MongoDB默认值监听localhost ,所有全程无法连接：</p>
+<p><img src="img/1740649372729.png" alt="1740649372729" loading="lazy"></p>
+<p><font color='red'>所以在启动命令再加一个参数 bind_ip=0.0.0.0：监听所有IP，这样远程才能连接：</font></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token operator">-</span> <span class="token punctuation">.</span>/mongod <span class="token operator">--</span>port<span class="token operator">=</span><span class="token number">27017</span> <span class="token operator">--</span>dbpath<span class="token operator">=</span><span class="token punctuation">.</span><span class="token punctuation">.</span>/data <span class="token operator">--</span>logpath<span class="token operator">=</span><span class="token punctuation">.</span><span class="token punctuation">.</span>/logs<span class="token operator">/</span>mongo<span class="token punctuation">.</span>log <span class="token operator">--</span>fork <span class="token operator">--</span>bind_ip<span class="token operator">=</span><span class="token number">0.0</span><span class="token number">.0</span><span class="token number">.0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<h2 id="整合应用"><a href="#整合应用" class="headerlink" title="整合应用"></a>整合应用</h2><p><strong>说明: 这里主要以 springboot 应用为基础应用进行整合开发。</strong></p>
+<p>Spring Data : <code>Spring 数据框架 JPA 、Redis、Elasticsearch、AMQP、MongoDB</code></p>
+<p><code>JdbcTemplate</code></p>
+<p><code>RedisTemplate</code></p>
+<p><code>ElasticTempalte</code></p>
+<p><code>AmqpTemplate</code></p>
+<p><code>MongoTemplate</code></p>
+<p>SpringBoot  Spring Data  MongoDB</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 引入依赖</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-mongodb<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 编写配置</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token comment"># mongodb 没有开启任何安全协议</span>
+<span class="token comment"># mongodb(协议)://121.5.167.13(主机):27017(端口)/baizhi(库名)</span>
+<span class="token attr-name">spring.data.mongodb.uri</span><span class="token punctuation">=</span><span class="token attr-value">mongodb://121.5.167.13:27017/baizhi</span>
+
+
+<span class="token comment"># mongodb 存在密码</span>
+<span class="token comment">#spring.data.mongodb.host=tx.chenyn.cn</span>
+<span class="token comment">#spring.data.mongodb.port=27017</span>
+<span class="token comment">#spring.data.mongodb.database=baizhi</span>
+<span class="token comment">#spring.data.mongodb.username=root</span>
+<span class="token comment">#spring.data.mongodb.password=root</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h3><ul>
+<li><p>创建集合</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testCreateCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">createCollection</span><span class="token punctuation">(</span><span class="token string">"users"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//参数: 创建集合名称</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>注意:创建集合不能存在,存在报错</code></p>
+</li>
+<li><p>删除集合</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testDeleteCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">dropCollection</span><span class="token punctuation">(</span><span class="token string">"users"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="相关注解"><a href="#相关注解" class="headerlink" title="相关注解"></a>相关注解</h3></li>
+<li><p><code>@Document</code></p>
+<ul>
+<li>修饰范围:     用在类上</li>
+<li>作用:    用来映射这个类的一个对象为 mongo 中一条文档数据</li>
+<li>属性：(<code>value 、collection</code> )用来指定操作的集合名称</li>
+</ul>
+</li>
+<li><p><code>@Id</code></p>
+<ul>
+<li>修饰范围:  用在成员变量、方法上</li>
+<li>作用：       用来将成员变量的值映射为文档的_id 的值</li>
+</ul>
+</li>
+<li><p><code>@Field</code></p>
+<ul>
+<li>修饰范围:  用在成员变量、方法上</li>
+<li>作用:          用来将成员变量以及值映射为文档中一个key、value对</li>
+<li>属性:         ( <code>name,value </code>)用来指定在文档中 key 的名称,默认为成员变量名</li>
+</ul>
+</li>
+<li><p><code>@Transient</code></p>
+<ul>
+<li>修饰范围: 用在成员变量、方法上</li>
+<li>作用        : 用来指定改成员变量，不参与文档的序列化</li>
+</ul>
+</li>
+</ul>
+<h3 id="文档操作"><a href="#文档操作" class="headerlink" title="文档操作"></a>文档操作</h3><ul>
+<li><p>查询</p>
+<ul>
+<li><p>Criteria</p>
+</li>
+<li><p><img src="img/image-20211221201808467.png" alt="image-20211221201808467" loading="lazy"></p>
+</li>
+<li><p>常见查询</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token comment">//基于 id 查询</span>
+  template<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//查询所有</span>
+  template<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//等值查询</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+               <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// > gt  &lt; lt  >= gte  &lt;= lte</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">lt</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">gt</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">lte</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">gte</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//and</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人"</span><span class="token punctuation">)</span>
+                            <span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//or</span>
+  <span class="token class-name">Criteria</span> criteria <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Criteria</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">orOperator</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人_1"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+     <span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人_2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>criteria<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//and or</span>
+  <span class="token class-name">Criteria</span> criteria1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Criteria</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token number">23</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">orOperator</span><span class="token punctuation">(</span>
+    <span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人_1"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人_2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>criteria1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//sort 排序</span>
+  <span class="token class-name">Query</span> query <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  query<span class="token punctuation">.</span><span class="token keyword">with</span><span class="token punctuation">(</span><span class="token class-name">Sort</span><span class="token punctuation">.</span><span class="token function">by</span><span class="token punctuation">(</span><span class="token class-name">Sort</span><span class="token punctuation">.</span><span class="token class-name">Order</span><span class="token punctuation">.</span><span class="token function">desc</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//desc 降序  asc 升序</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+  <span class="token comment">//skip limit 分页</span>
+  <span class="token class-name">Query</span> queryPage <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  queryPage<span class="token punctuation">.</span><span class="token keyword">with</span><span class="token punctuation">(</span><span class="token class-name">Sort</span><span class="token punctuation">.</span><span class="token function">by</span><span class="token punctuation">(</span><span class="token class-name">Sort</span><span class="token punctuation">.</span><span class="token class-name">Order</span><span class="token punctuation">.</span><span class="token function">desc</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">//desc 降序  asc 升序</span>
+    <span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">//起始条数</span>
+    <span class="token punctuation">.</span><span class="token function">limit</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//每页显示记录数</span>
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>queryPage<span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+  <span class="token comment">//count 总条数</span>
+  template<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//distinct 去重</span>
+  <span class="token comment">//参数 1:查询条件 参数 2: 去重字段  参数 3: 操作集合  参数 4: 返回类型</span>
+  template<span class="token punctuation">.</span><span class="token function">findDistinct</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> 
+                        <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">//使用 json 字符串方式查询 </span>
+        <span class="token class-name">Query</span> query <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BasicQuery</span><span class="token punctuation">(</span>
+          <span class="token string">"&#123;$or:[&#123;name:'编程不良人'&#125;,&#123;name:'徐凤年'&#125;]&#125;"</span><span class="token punctuation">,</span> 
+          <span class="token string">"&#123;name:0&#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  template<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+<li><p>添加</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testSaveOrUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token class-name">User</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  user<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  user<span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  user<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"编程不良人_1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  user<span class="token punctuation">.</span><span class="token function">setBir</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token class-name">User</span> userDB <span class="token operator">=</span> mongoTemplate<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//返回保存的对象 insert or save</span>
+  <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>userDB<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>insert:</strong> 插入重复数据时：<code>insert</code>报<code>DuplicateKeyException</code>提示主键重复；<code>save</code>对已存在的数据进行更新。</li>
+<li><strong>save:</strong> 批处理操作时：<code>insert</code>可以一次性插入整个数据，效率较高；<code>save</code>需遍历整个数据，一次插入或更新，效率较低。</li>
+</ul>
+</li>
+<li><p>更新</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span>  <span class="token function">testUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token comment">//1.更新条件</span>
+  <span class="token class-name">Query</span> query <span class="token operator">=</span> <span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//2.更新内容</span>
+  <span class="token class-name">Update</span> update <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  update<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span><span class="token string">"编程"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//单条更新</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">updateFirst</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> update<span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//多条更新</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">updateMulti</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> update<span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//更新插入</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">upsert</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span>update<span class="token punctuation">,</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//返回值均为 updateResult</span>
+  <span class="token comment">//System.out.println("匹配条数:" + updateResult.getMatchedCount());</span>
+  <span class="token comment">//System.out.println("修改条数:" + updateResult.getModifiedCount());</span>
+  <span class="token comment">//System.out.println("插入id_:" + updateResult.getUpsertedId());</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>删除</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testDelete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token comment">//删除所有</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//条件删除</span>
+  mongoTemplate<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>
+    <span class="token class-name">Query</span><span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token class-name">Criteria</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token string">"编程不良人"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="副本集"><a href="#副本集" class="headerlink" title="副本集"></a>副本集<Replica Set></h2></li>
+</ul>
+<h3 id="说明-4"><a href="#说明-4" class="headerlink" title="说明"></a>说明</h3><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/replication/">https://docs.mongodb.com/manual/replication/</a></p>
+<p>MongoDB 副本集（Replica Set）是有自动故障恢复功能的主从集群，有一个Primary节点和一个或多个Secondary节点组成。副本集没有固定的<code>主节点</code>,当<code>主节点</code>发生故障时整个集群会<code>选举一个主节点</code>为系统提供服务以保证系统的高可用。</p>
+<p><img src="img/replica-set-read-write-operations-primary.bakedsvg-20211214132813414.svg" loading="lazy"></p>
+<h3 id="Automatic-Failover"><a href="#Automatic-Failover" class="headerlink" title="Automatic Failover"></a>Automatic Failover</h3><p>​    自动故障转移机制: 当主节点未与集合的其他成员通信超过配置的选举超时时间（默认为 10 秒）时，合格的辅助节点将调用选举以将自己提名为新的主节点。集群尝试完成新主节点的选举并恢复正常操作。</p>
+<p><img src="img/replica-set-trigger-election.bakedsvg.svg" loading="lazy"></p>
+<h3 id="搭建副本集"><a href="#搭建副本集" class="headerlink" title="搭建副本集"></a>搭建副本集</h3><ul>
+<li><p>创建数据目录</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 在安装目录中创建</span>
+<span class="token list punctuation">-</span> mkdir -p ../repl/data1
+<span class="token list punctuation">-</span> mkdir -p ../repl/data2
+<span class="token list punctuation">-</span> mkdir -p ../repl/data3
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>搭建副本集</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mongod --port <span class="token number">27017</span>  --dbpath <span class="token punctuation">..</span>/repl/data1 --bind_ip <span class="token number">0.0</span>.0.0 --replSet  myreplace/<span class="token punctuation">[</span><span class="token number">121.5</span>.167.13:27018,121.5.167.13:27019<span class="token punctuation">]</span>
+
+$ mongod --port <span class="token number">27018</span>  --dbpath <span class="token punctuation">..</span>/repl/data2 --bind_ip <span class="token number">0.0</span>.0.0 --replSet  myreplace/<span class="token punctuation">[</span><span class="token number">121.5</span>.167.13:27019,121.5.167.13:27017<span class="token punctuation">]</span>
+
+$ mongod --port <span class="token number">27019</span>  --dbpath <span class="token punctuation">..</span>/repl/data3 --bind_ip <span class="token number">0.0</span>.0.0 --replSet  myreplace/<span class="token punctuation">[</span><span class="token number">121.5</span>.167.13:27017,121.5.167.13:27018<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>​        <code>注意: --replSet 副本集  myreplace 副本集名称/集群中其他节点的主机和端口</code></p>
+</li>
+<li><p>配置副本集，连接任意节点</p>
+<ul>
+<li><p>use admin</p>
+</li>
+<li><p>初始化副本集</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">> var config = <span class="token punctuation">&#123;</span> 
+		_id<span class="token operator">:</span><span class="token string">"myreplace"</span><span class="token punctuation">,</span> 
+		members<span class="token operator">:</span><span class="token punctuation">[</span>
+		<span class="token punctuation">&#123;</span>_id<span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">,</span>host<span class="token operator">:</span><span class="token string">"121.5.167.13:27017"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+		<span class="token punctuation">&#123;</span>_id<span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span>host<span class="token operator">:</span><span class="token string">"121.5.167.13:27018"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+		<span class="token punctuation">&#123;</span>_id<span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">,</span>host<span class="token operator">:</span><span class="token string">"121.5.167.13:27019"</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span>
+> rs.initiate(config);<span class="token comment">//初始化配置 </span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>设置客户端临时可以访问</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">></span> rs<span class="token punctuation">.</span>slaveOk<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">></span> rs<span class="token punctuation">.</span>secondaryOk<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="分片集群"><a href="#分片集群" class="headerlink" title="分片集群"></a>分片集群<Sharding Cluster></h2></li>
+</ul>
+</li>
+</ul>
+<h3 id="说明-5"><a href="#说明-5" class="headerlink" title="说明"></a>说明</h3><p>​    <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/sharding/">https://docs.mongodb.com/manual/sharding/</a></p>
+<p>​    <code>分片(sharding)</code>是指<code>将数据拆分,将其分散存在不同机器的过程</code>，有时也用<code>分区(partitioning)</code>来表示这个概念,将数据分散在不同的机器上，不需要功能强大的大型计算机就能存储更多的数据，处理更大的负载。</p>
+<p>​    分片目的是通过分片能够增加更多机器来应对不断的增加负载和数据，还不影响应用运行。</p>
+<p>​    MongoDB支持<code>自动分片</code>,可以摆脱手动分片的管理困扰，集群自动切分数据做负载均衡。MongoDB分片的基本思想就是将集合拆分成多个块，这些快分散在若干个片里，每个片只负责总数据的一部分，应用程序不必知道哪些片对应哪些数据，甚至不需要知道数据拆分了，所以在分片之前会运行一个路由进程，mongos进程，这个路由器知道所有的数据存放位置，应用只需要直接与mongos交互即可。mongos自动将请求转到相应的片上获取数据，从应用角度看分不分片没有什么区别。</p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="img/image-20211214150523282.png" alt="image-20211214150523282" loading="lazy"></p>
+<ul>
+<li><p><strong>Shard:</strong>    用于存储实际的数据块，实际生产环境中一个shard server角色可由几台机器组个一个replica set承担，防止主机单点故障</p>
+</li>
+<li><p><strong>Config Server</strong>:mongod实例，存储了整个 ClusterMetadata。</p>
+</li>
+<li><p><strong>Query Routers</strong>: 前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用。</p>
+</li>
+<li><p><strong>Shard Key</strong>: 片键，设置分片时需要在集合中选一个键,用该键的值作为拆分数据的依据,这个片键称之为(shard key)，片键的选取很重要,片键的选取决定了数据散列是否均匀。</p>
+</li>
+</ul>
+<h3 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h3><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 1.集群规划</span>
+<span class="token list punctuation">-</span> Shard Server 1：27017
+<span class="token list punctuation">-</span> Shard Repl   1：27018
+
+<span class="token list punctuation">-</span> Shard Server 2：27019
+<span class="token list punctuation">-</span> Shard Repl   2：27020
+
+<span class="token list punctuation">-</span> Shard Server 3：27021
+<span class="token list punctuation">-</span> Shard Repl   3：27022
+
+<span class="token list punctuation">-</span> Config Server ：27023
+<span class="token list punctuation">-</span> Config Server ：27024
+<span class="token list punctuation">-</span> Config Server ：27025
+
+<span class="token list punctuation">-</span> Route Process ：27026
+
+<span class="token title important"><span class="token punctuation">#</span> 2.进入安装的 bin 目录创建数据目录</span>
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/s0
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/s0-repl
+
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/s1
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/s1-repl
+
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/s2
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/s2-repl
+
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/config1
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/config2
+<span class="token list punctuation">-</span> mkdir -p ../cluster/shard/config3
+
+<span class="token title important"><span class="token punctuation">#</span> 3.启动4个 shard服务</span>
+
+<span class="token title important"><span class="token punctuation">#</span> 启动 s0、r0</span>
+<span class="token blockquote punctuation">></span> ./mongod --port 27017 --dbpath ../cluster/shard/s0 --bind_ip 0.0.0.0 --shardsvr --replSet r0/121.5.167.13:27018
+<span class="token blockquote punctuation">></span> ./mongod --port 27018 --dbpath ../cluster/shard/s0-repl --bind_ip 0.0.0.0 --shardsvr --replSet r0/121.5.167.13:27017
+-- 1.登录任意节点
+-- 2. use admin
+-- 3. 执行
+		config = &#123; _id:"r0", members:[
+      &#123;_id:0,host:"121.5.167.13:27017"&#125;,
+      &#123;_id:1,host:"121.5.167.13:27018"&#125;,
+    	]
+    &#125;
+		rs.initiate(config);//初始化
+
+<span class="token title important"><span class="token punctuation">#</span> 启动 s1、r1</span>
+<span class="token blockquote punctuation">></span> ./mongod --port 27019 --dbpath ../cluster/shard/s1 --bind_ip 0.0.0.0 --shardsvr  --replSet r1/121.5.167.13:27020
+<span class="token blockquote punctuation">></span> ./mongod --port 27020 --dbpath ../cluster/shard/s1-repl --bind_ip 0.0.0.0 --shardsvr --replSet r1/121.5.167.13:27019
+-- 1.登录任意节点
+-- 2. use admin
+-- 3. 执行
+		config = &#123; _id:"r1", members:[
+      &#123;_id:0,host:"121.5.167.13:27019"&#125;,
+      &#123;_id:1,host:"121.5.167.13:27020"&#125;,
+    	]
+    &#125;
+		rs.initiate(config);//初始化
+
+<span class="token title important"><span class="token punctuation">#</span> 启动 s2、r2</span>
+<span class="token blockquote punctuation">></span> ./mongod --port 27021 --dbpath ../cluster/shard/s2 --bind_ip 0.0.0.0 --shardsvr --replSet r2/121.5.167.13:27022
+<span class="token blockquote punctuation">></span> ./mongod --port 27022 --dbpath ../cluster/shard/s2-repl --bind_ip 0.0.0.0 --shardsvr --replSet r2/121.5.167.13:27021
+-- 1.登录任意节点
+-- 2. use admin
+-- 3. 执行
+		config = &#123; _id:"r2", members:[
+      &#123;_id:0,host:"121.5.167.13:27021"&#125;,
+      &#123;_id:1,host:"121.5.167.13:27022"&#125;,
+    	]
+    &#125;
+		rs.initiate(config);//初始化
+
+<span class="token title important"><span class="token punctuation">#</span> 4.启动3个config服务</span>
+
+<span class="token blockquote punctuation">></span> ./mongod --port 27023 --dbpath ../cluster/shard/config1 --bind_ip 0.0.0.0 --replSet  config/[121.5.167.13:27024,121.5.167.13:27025] --configsvr
+
+<span class="token blockquote punctuation">></span> ./mongod --port 27024 --dbpath ../cluster/shard/config2 --bind_ip 0.0.0.0 --replSet  config/[121.5.167.13:27023,121.5.167.13:27025] --configsvr
+
+<span class="token blockquote punctuation">></span> ./mongod --port 27025 --dbpath ../cluster/shard/config3 --bind_ip 0.0.0.0 --replSet  config/[121.5.167.13:27023,121.5.167.13:27024] --configsvr
+
+<span class="token title important"><span class="token punctuation">#</span> 5.初始化 config server 副本集</span>
+- <span class="token code keyword">`登录任意节点 congfig server`</span>
+<span class="token blockquote punctuation">></span> 1.use admin 
+<span class="token blockquote punctuation">></span> 2.在admin中执行
+  config = &#123; 
+      _id:"config", 
+      configsvr: true,
+      members:[
+          &#123;_id:0,host:"121.5.167.13:27023"&#125;,
+          &#123;_id:1,host:"121.5.167.13:27024"&#125;,
+          &#123;_id:2,host:"121.5.167.13:27025"&#125;
+        ]
+  &#125;
+<span class="token blockquote punctuation">></span> 3.rs.initiate(config); //初始化副本集配置 
+
+<span class="token title important"><span class="token punctuation">#</span> 6.启动 mongos 路由服务</span>
+
+<span class="token blockquote punctuation">></span> ./mongos --port 27026 --configdb config/121.5.167.13:27023,121.5.167.13:27024,121.5.167.13:27025 --bind_ip 0.0.0.0 
+
+<span class="token title important"><span class="token punctuation">#</span> 7.登录 mongos 服务</span>
+<span class="token blockquote punctuation">></span> 1.登录 mongo --port 27026
+<span class="token blockquote punctuation">></span> 2.use admin
+<span class="token blockquote punctuation">></span> 3.添加分片信息
+	db.runCommand(&#123; addshard:"r0/121.5.167.13:27017,121.5.167.13:27018",
+	"allowLocal":true &#125;);
+	db.runCommand(&#123; addshard:"r1/121.5.167.13:27019,121.5.167.13:27020",
+	"allowLocal":true &#125;);
+	db.runCommand(&#123; addshard:"r2/121.5.167.13:27021,121.5.167.13:27022",
+	"allowLocal":true &#125;);
+<span class="token blockquote punctuation">></span> 4.指定分片的数据库
+	db.runCommand(&#123; enablesharding:"baizhi" &#125;);
+
+<span class="token blockquote punctuation">></span> 5.设置库的片键信息
+	db.runCommand(&#123; shardcollection: "baizhi.users", key: &#123; _id:1&#125;&#125;);
+	db.runCommand(&#123; shardcollection: "baizhi.emps", key: &#123; _id: "hashed"&#125;&#125;)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</div><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="Donate" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hand-coin-line"></use></svg></span><div id="reward-comment">给个饭钱？</div><div id="qr" style="display:none;"><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/J2Sv6rVeLtAPiHx.jpg"><img loading="lazy" src="https://i.loli.net/2020/12/23/J2Sv6rVeLtAPiHx.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-alipay-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/4rBXF1deMD6KyN8.png"><img loading="lazy" src="https://i.loli.net/2020/12/23/4rBXF1deMD6KyN8.png" alt="QQ 支付" title="QQ 支付"></a><div><span style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/XvirFV3o6GyRMZU.png"><img loading="lazy" src="https://i.loli.net/2020/12/23/XvirFV3o6GyRMZU.png" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-pay-line"></use></svg></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author: </strong>Sovzn</li><li class="post-copyright-link"><strong>Post link: </strong><a href="http://sovzn.github.io/2025/02/27/MongoDB/" title="MongoDB">http://sovzn.github.io/2025/02/27/MongoDB/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> unless otherwise stated.</li></ul></section></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2025/02/18/python/" rel="next" title="python"><span class="post-nav-text">python</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/YunYouJun/yunyoujun.github.io/issues?q=is:issue+MongoDB">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2025 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Sovzn</span></div><div class="live_time"><span>本博客已运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-04-12T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#6200ee" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="Search"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="Searching..." value=""></div><div id="local-search-result"></div></div></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
