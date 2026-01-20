@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#6200ee"><meta name="author" content="Sovzn"><meta name="copyright" content="Sovzn"><meta name="generator" content="Hexo 5.3.0"><meta name="theme" content="hexo-theme-yun"><title>隔离级别 | 大师兄</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.22/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="shortcut icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#6200ee"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"sovzn.github.io","root":"/","title":"大师兄的小破站","version":"1.3.0","mode":"auto","copycode":true,"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><meta name="description" content="事务隔离级别所要解决的问题（脏读、不可重复读、幻读），本质上都发生在多个并发事务同时（或交错）访问 *相同数据范围*（如同一张表、同一行、或满足相同查询条件的记录集）时。   一、四种标准隔离级别概览   隔离级别 脏读 不可重复读 幻读 并发性能 默认数据库    READ UNCOMMITTED ✅ 允许 ✅ 允许 ✅ 允许 ⭐⭐⭐⭐⭐ 几乎无   READ COMMITTED ❌ 禁止">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隔离级别">
+<meta property="og:url" content="http://sovzn.github.io/2026/01/20/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/index.html">
+<meta property="og:site_name" content="大师兄">
+<meta property="og:description" content="事务隔离级别所要解决的问题（脏读、不可重复读、幻读），本质上都发生在多个并发事务同时（或交错）访问 *相同数据范围*（如同一张表、同一行、或满足相同查询条件的记录集）时。   一、四种标准隔离级别概览   隔离级别 脏读 不可重复读 幻读 并发性能 默认数据库    READ UNCOMMITTED ✅ 允许 ✅ 允许 ✅ 允许 ⭐⭐⭐⭐⭐ 几乎无   READ COMMITTED ❌ 禁止">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-01-20T13:10:27.000Z">
+<meta property="article:modified_time" content="2026-01-20T16:31:12.050Z">
+<meta property="article:author" content="Sovzn">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Sovzn"><img width="96" loading="lazy" src="/Yun.png" alt="Sovzn"><span class="site-author-status" title="永远相信美好的事情即将发生">😊</span></a><div class="site-author-name"><a href="/about/">Sovzn</a></div><a class="site-name" href="/about/site.html">大师兄</a><sub class="site-subtitle"></sub><div class="site-desciption">我只拥有你的月光,我要把它当作骄阳。</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">89</span></a></div><div class="site-state-item"><a href="/categories/" title="Categories"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">30</span></a></div><div class="site-state-item"><a href="/tags/" title="Tags"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">19</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="http://wpa.qq.com/msgrd?v=3&amp;uin=&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Twitter" target="_blank" style="color:#1da1f2"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-twitter-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send-plane-2-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/null" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%9B%E7%A7%8D%E6%A0%87%E5%87%86%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%A6%82%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">一、四种标准隔离级别概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E8%AF%A6%E8%A7%A3-%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">二、各隔离级别详解 + 示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-READ-UNCOMMITTED%EF%BC%88%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">1. READ UNCOMMITTED（读未提交）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9C%85-%E7%89%B9%E7%82%B9"><span class="toc-number">2.1.1.</span> <span class="toc-text">✅ 特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E9%A3%8E%E9%99%A9%E5%9C%BA%E6%99%AF"><span class="toc-number">2.1.2.</span> <span class="toc-text">⚠️ 风险场景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%93%8C-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.1.3.</span> <span class="toc-text">📌 适用场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-READ-COMMITTED%EF%BC%88%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A4%EF%BC%89%E2%9C%85-%E6%9C%80%E5%B8%B8%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">2. READ COMMITTED（读已提交）✅ 最常用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9C%85-%E7%89%B9%E7%82%B9-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">✅ 特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%A7%AA-%E7%A4%BA%E4%BE%8B%EF%BC%88%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%89"><span class="toc-number">2.2.2.</span> <span class="toc-text">🧪 示例（不可重复读）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E9%A3%8E%E9%99%A9"><span class="toc-number">2.2.3.</span> <span class="toc-text">⚠️ 风险</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9C%85-%E5%AE%89%E5%85%A8%E5%81%9A%E6%B3%95"><span class="toc-number">2.2.4.</span> <span class="toc-text">✅ 安全做法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%93%8C-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="toc-number">2.2.5.</span> <span class="toc-text">📌 适用场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-REPEATABLE-READ%EF%BC%88%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%89%E2%9C%85-MySQL-%E9%BB%98%E8%AE%A4"><span class="toc-number">2.3.</span> <span class="toc-text">3. REPEATABLE READ（可重复读）✅ MySQL 默认</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9C%85-%E7%89%B9%E7%82%B9%EF%BC%88MySQL-InnoDB%EF%BC%89"><span class="toc-number">2.3.1.</span> <span class="toc-text">✅ 特点（MySQL InnoDB）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%A7%AA-%E7%A4%BA%E4%BE%8B%EF%BC%88%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%80%E8%87%B4%EF%BC%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">🧪 示例（快照读一致）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%B3%A8%E6%84%8F%EF%BC%9A%E5%BD%93%E5%89%8D%E8%AF%BB%EF%BC%88Current-Read%EF%BC%89%E4%BC%9A%E7%9C%8B%E5%88%B0%E6%96%B0%E5%80%BC%EF%BC%81"><span class="toc-number">2.3.3.</span> <span class="toc-text">⚠️ 注意：当前读（Current Read）会看到新值！</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%93%8C-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="toc-number">2.3.4.</span> <span class="toc-text">📌 适用场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-SERIALIZABLE%EF%BC%88%E4%B8%B2%E8%A1%8C%E5%8C%96%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">4. SERIALIZABLE（串行化）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%9C%85-%E7%89%B9%E7%82%B9-2"><span class="toc-number">2.4.1.</span> <span class="toc-text">✅ 特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%94%92-%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%88%E5%9B%A0%E6%95%B0%E6%8D%AE%E5%BA%93%E8%80%8C%E5%BC%82%EF%BC%89"><span class="toc-number">2.4.2.</span> <span class="toc-text">🔒 实现方式（因数据库而异）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%A7%AA-MySQL-%E7%A4%BA%E4%BE%8B%EF%BC%88%E8%87%AA%E5%8A%A8%E5%8A%A0%E9%94%81%EF%BC%89"><span class="toc-number">2.4.3.</span> <span class="toc-text">🧪 MySQL 示例（自动加锁）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%93%8C-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="toc-number">2.4.4.</span> <span class="toc-text">📌 适用场景</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%85%B3%E9%94%AE%E8%A1%A5%E5%85%85%EF%BC%9A%E9%94%81%E7%9A%84%E7%B2%92%E5%BA%A6%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">三、关键补充：锁的粒度问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%93-accountRepo-findById-1L-%E4%BC%9A%E9%94%81%E8%A1%A8%E5%90%97%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">❓ accountRepo.findById(1L) 会锁表吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">四、最佳实践总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Boot-%E8%AE%BE%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">Spring Boot 设置方式</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://Sovzn.github.io/2026/01/20/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Sovzn"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="大师兄"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">隔离级别</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2026-01-20 21:10:27" itemprop="dateCreated datePublished" datetime="2026-01-20T21:10:27+08:00">2026-01-20</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="Modified: 2026-01-21 00:31:12" itemprop="dateModified" datetime="2026-01-21T00:31:12+08:00">2026-01-21</time></div><div class="post-classify"><span class="post-tag"><a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">数据库</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#6200ee;"><blockquote>
+<p> <strong>事务隔离级别所要解决的问题（脏读、不可重复读、幻读），本质上都发生在多个并发事务同时（或交错）访问 *相同数据范围*（如同一张表、同一行、或满足相同查询条件的记录集）时。</strong> </p>
+</blockquote>
+<h2 id="一、四种标准隔离级别概览"><a href="#一、四种标准隔离级别概览" class="headerlink" title="一、四种标准隔离级别概览"></a>一、四种标准隔离级别概览</h2><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+<th>并发性能</th>
+<th>默认数据库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>READ UNCOMMITTED</strong></td>
+<td>✅ 允许</td>
+<td>✅ 允许</td>
+<td>✅ 允许</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>几乎无</td>
+</tr>
+<tr>
+<td><strong>READ COMMITTED</strong></td>
+<td>❌ 禁止</td>
+<td>✅ 允许</td>
+<td>✅ 允许</td>
+<td>⭐⭐⭐⭐</td>
+<td>Oracle, PostgreSQL, SQL Server</td>
+</tr>
+<tr>
+<td><strong>REPEATABLE READ</strong></td>
+<td>❌ 禁止</td>
+<td>❌ 禁止</td>
+<td>⚠️ 标准允许，<strong>MySQL InnoDB 实际禁止</strong></td>
+<td>⭐⭐⭐</td>
+<td><strong>MySQL</strong></td>
+</tr>
+<tr>
+<td><strong>SERIALIZABLE</strong></td>
+<td>❌ 禁止</td>
+<td>❌ 禁止</td>
+<td>❌ 禁止</td>
+<td>⭐</td>
+<td>少数关键系统</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 <strong>脏读</strong>：读到未提交的数据<br> <strong>不可重复读</strong>：同一事务内多次读同一行，结果不同（被 UPDATE）<br> <strong>幻读</strong>：同一事务内多次执行相同范围查询，结果集行数不同（被 INSERT/DELETE）</p>
+</blockquote>
+<hr>
+<h2 id="二、各隔离级别详解-示例"><a href="#二、各隔离级别详解-示例" class="headerlink" title="二、各隔离级别详解 + 示例"></a>二、各隔离级别详解 + 示例</h2><hr>
+<h3 id="1-READ-UNCOMMITTED（读未提交）"><a href="#1-READ-UNCOMMITTED（读未提交）" class="headerlink" title="1. READ UNCOMMITTED（读未提交）"></a>1. <code>READ UNCOMMITTED</code>（读未提交）</h3><h4 id="✅-特点"><a href="#✅-特点" class="headerlink" title="✅ 特点"></a>✅ 特点</h4><ul>
+<li>可读取其他事务 <strong>未提交</strong> 的数据（脏读）</li>
+<li><strong>不加读锁</strong>，性能最高，一致性最差</li>
+</ul>
+<h4 id="⚠️-风险场景"><a href="#⚠️-风险场景" class="headerlink" title="⚠️ 风险场景"></a>⚠️ 风险场景</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span><span class="token comment">// 会话 A</span>
+<span class="token number">2</span><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>READ_UNCOMMITTED<span class="token punctuation">)</span>
+<span class="token number">3</span>public <span class="token keyword">void</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token number">4</span>    <span class="token class-name">Account</span> a <span class="token operator">=</span> repo<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 读到 balance = 999</span>
+<span class="token number">5</span>    <span class="token comment">// 但会话 B 还没 COMMIT！甚至可能 ROLLBACK！</span>
+<span class="token number">6</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span><span class="token operator">--</span> 会话 <span class="token class-name">B</span>
+<span class="token number">2</span>START TRANSACTION<span class="token punctuation">;</span>
+<span class="token number">3</span>UPDATE accounts <span class="token class-name">SET</span> balance <span class="token operator">=</span> <span class="token number">999</span> <span class="token class-name">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token number">4</span><span class="token operator">--</span> 未 COMMIT → 会话 <span class="token class-name">A</span> 已读到 <span class="token number">999</span>（脏数据！）
+<span class="token number">5</span>ROLLBACK<span class="token punctuation">;</span> <span class="token operator">--</span> 真实余额仍是 <span class="token number">100</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="📌-适用场景"><a href="#📌-适用场景" class="headerlink" title="📌 适用场景"></a>📌 适用场景</h4><ul>
+<li>日志分析、监控指标等<strong>容忍错误</strong>的只读场景</li>
+<li><strong>绝不用于</strong>金融、订单、账户等业务！</li>
+</ul>
+<hr>
+<h3 id="2-READ-COMMITTED（读已提交）✅-最常用"><a href="#2-READ-COMMITTED（读已提交）✅-最常用" class="headerlink" title="2. READ COMMITTED（读已提交）✅ 最常用"></a>2. <code>READ COMMITTED</code>（读已提交）✅ 最常用</h3><h4 id="✅-特点-1"><a href="#✅-特点-1" class="headerlink" title="✅ 特点"></a>✅ 特点</h4><ul>
+<li><strong>只能读已提交数据</strong>（防脏读）</li>
+<li><strong>每次 SELECT 都读最新已提交值</strong> → 同一事务内多次读可能不同（不可重复读）</li>
+<li><strong>如果其他事务正在修改但 尚未提交，读操作会 跳过未提交的更改，返回上一个已提交的值</strong>  (对比读未提交： 可能直接返回其他事务尚未提交的修改值*（即“脏数据”），而不是上一个已提交的值。 )</li>
+</ul>
+<h4 id="🧪-示例（不可重复读）"><a href="#🧪-示例（不可重复读）" class="headerlink" title="🧪 示例（不可重复读）"></a>🧪 示例（不可重复读）</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>READ_COMMITTED<span class="token punctuation">)</span>
+<span class="token number">2</span>public <span class="token keyword">void</span> <span class="token function">check</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token number">3</span>    <span class="token class-name">Account</span> a1 <span class="token operator">=</span> repo<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// balance = 100</span>
+<span class="token number">4</span>
+<span class="token number">5</span>    <span class="token comment">// 此时会话 B: UPDATE balance = 200; COMMIT;</span>
+<span class="token number">6</span>
+<span class="token number">7</span>    <span class="token class-name">Account</span> a2 <span class="token operator">=</span> repo<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// balance = 200 ❗️变了</span>
+<span class="token number">8</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="⚠️-风险"><a href="#⚠️-风险" class="headerlink" title="⚠️ 风险"></a>⚠️ 风险</h4><ul>
+<li><p>“读-改-写”模式危险：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span>if <span class="token punctuation">(</span>account<span class="token punctuation">.</span><span class="token function">getBalance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token number">2</span>    account<span class="token punctuation">.</span><span class="token function">setBalance</span><span class="token punctuation">(</span>account<span class="token punctuation">.</span><span class="token function">getBalance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 基于旧快照，可能透支！</span>
+<span class="token number">3</span>    repo<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>account<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">4</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="✅-安全做法"><a href="#✅-安全做法" class="headerlink" title="✅ 安全做法"></a>✅ 安全做法</h4></li>
+</ul>
+<pre class="line-numbers language-none"><code class="language-none">1-- 原子更新（推荐！）
+2UPDATE accounts 
+3SET balance &#x3D; balance - 100 
+4WHERE id &#x3D; 1 AND balance &gt;&#x3D; 100;
+5-- 检查 affected rows &#x3D;&#x3D; 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="📌-适用场景-1"><a href="#📌-适用场景-1" class="headerlink" title="📌 适用场景"></a>📌 适用场景</h4><ul>
+<li>大多数 Web 应用、API 服务、电商下单等</li>
+</ul>
+<hr>
+<h3 id="3-REPEATABLE-READ（可重复读）✅-MySQL-默认"><a href="#3-REPEATABLE-READ（可重复读）✅-MySQL-默认" class="headerlink" title="3. REPEATABLE READ（可重复读）✅ MySQL 默认"></a>3. <code>REPEATABLE READ</code>（可重复读）✅ MySQL 默认</h3><h4 id="✅-特点（MySQL-InnoDB）"><a href="#✅-特点（MySQL-InnoDB）" class="headerlink" title="✅ 特点（MySQL InnoDB）"></a>✅ 特点（MySQL InnoDB）</h4><ul>
+<li><strong>普通 SELECT 基于事务开始时的 MVCC 快照</strong></li>
+<li>同一事务内多次读<strong>同一行</strong>，结果一致（防不可重复读）</li>
+<li><strong>通过 Next-Key Lock 防止幻读</strong>（比 SQL 标准更强）</li>
+</ul>
+<h4 id="🧪-示例（快照读一致）"><a href="#🧪-示例（快照读一致）" class="headerlink" title="🧪 示例（快照读一致）"></a>🧪 示例（快照读一致）</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>REPEATABLE_READ<span class="token punctuation">)</span>
+<span class="token number">2</span>public <span class="token keyword">void</span> <span class="token function">observe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token number">3</span>    <span class="token class-name">Account</span> a1 <span class="token operator">=</span> repo<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 100</span>
+<span class="token number">4</span>
+<span class="token number">5</span>    <span class="token comment">// 会话 B: UPDATE balance = 200; COMMIT;</span>
+<span class="token number">6</span>
+<span class="token number">7</span>    <span class="token class-name">Account</span> a2 <span class="token operator">=</span> repo<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 仍为 100 ✅</span>
+     <span class="token comment">// “当前读”</span>
+<span class="token number">2</span>    SELECT <span class="token operator">*</span> FROM accounts <span class="token class-name">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span> <span class="token class-name">FOR</span> UPDATE<span class="token punctuation">;</span> <span class="token operator">--</span> 返回 <span class="token number">200</span>！
+<span class="token number">8</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="⚠️-注意：当前读（Current-Read）会看到新值！"><a href="#⚠️-注意：当前读（Current-Read）会看到新值！" class="headerlink" title="⚠️ 注意：当前读（Current Read）会看到新值！"></a>⚠️ 注意：当前读（Current Read）会看到新值！</h4><p>以下操作属于 <strong>当前读</strong>，会读取<strong>最新已提交的数据</strong>，并加锁：</p>
+<ul>
+<li><code>SELECT ... FOR UPDATE</code></li>
+<li><code>SELECT ... LOCK IN SHARE MODE</code></li>
+<li><code>UPDATE</code></li>
+<li><code>DELETE</code></li>
+<li><code>INSERT</code>（间接影响）</li>
+</ul>
+<h4 id="📌-适用场景-2"><a href="#📌-适用场景-2" class="headerlink" title="📌 适用场景"></a>📌 适用场景</h4><ul>
+<li>报表生成、账务对账、金融核对等需<strong>读一致性</strong>的场景</li>
+</ul>
+<hr>
+<h3 id="4-SERIALIZABLE（串行化）"><a href="#4-SERIALIZABLE（串行化）" class="headerlink" title="4. SERIALIZABLE（串行化）"></a>4. <code>SERIALIZABLE</code>（串行化）</h3><h4 id="✅-特点-2"><a href="#✅-特点-2" class="headerlink" title="✅ 特点"></a>✅ 特点</h4><ul>
+<li><strong>完全消除并发异常</strong>，效果等价于串行执行</li>
+<li><strong>代价：性能极低，易死锁</strong></li>
+</ul>
+<h4 id="🔒-实现方式（因数据库而异）"><a href="#🔒-实现方式（因数据库而异）" class="headerlink" title="🔒 实现方式（因数据库而异）"></a>🔒 实现方式（因数据库而异）</h4><table>
+<thead>
+<tr>
+<th>数据库</th>
+<th>实现方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MySQL InnoDB</strong></td>
+<td>所有 <code>SELECT</code> 自动转为 <code>SELECT ... LOCK IN SHARE MODE</code>（加共享锁）</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL</strong></td>
+<td>使用 SSI（Serializable Snapshot Isolation），<strong>不加读锁</strong>，提交时检测冲突</td>
+</tr>
+</tbody></table>
+<h4 id="🧪-MySQL-示例（自动加锁）"><a href="#🧪-MySQL-示例（自动加锁）" class="headerlink" title="🧪 MySQL 示例（自动加锁）"></a>🧪 MySQL 示例（自动加锁）</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span> <span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>SERIALIZABLE<span class="token punctuation">)</span>
+<span class="token number">2</span> <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token number">3</span>    repo<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 实际执行：SELECT ... LOCK IN SHARE MODE</span>
+<span class="token number">4</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>→ 其他事务无法同时 <code>UPDATE id=1</code>，会被阻塞。</p>
+<h4 id="📌-适用场景-3"><a href="#📌-适用场景-3" class="headerlink" title="📌 适用场景"></a>📌 适用场景</h4><ul>
+<li>银行核心账务、法律审计等<strong>绝对一致性要求</strong> + <strong>低并发</strong>场景</li>
+</ul>
+<hr>
+<h2 id="三、关键补充：锁的粒度问题"><a href="#三、关键补充：锁的粒度问题" class="headerlink" title="三、关键补充：锁的粒度问题"></a>三、关键补充：锁的粒度问题</h2><h3 id="❓-accountRepo-findById-1L-会锁表吗？"><a href="#❓-accountRepo-findById-1L-会锁表吗？" class="headerlink" title="❓ accountRepo.findById(1L) 会锁表吗？"></a>❓ <code>accountRepo.findById(1L)</code> 会锁表吗？</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>是否加锁？</th>
+<th>锁什么？</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>普通 SELECT</strong>（默认）</td>
+<td>❌ 不加锁</td>
+<td>无</td>
+</tr>
+<tr>
+<td><strong><code>FOR UPDATE</code> / <code>LOCK IN SHARE MODE</code></strong></td>
+<td>✅ 加锁</td>
+<td><strong>仅 <code>id=1</code> 这一行</strong>（前提是 <code>id</code> 是索引/主键）</td>
+</tr>
+<tr>
+<td><strong><code>SERIALIZABLE</code>（MySQL）</strong></td>
+<td>✅ 自动加共享锁</td>
+<td><strong>仅 <code>id=1</code> 这一行</strong></td>
+</tr>
+<tr>
+<td><strong>WHERE 条件无索引 + FOR UPDATE</strong></td>
+<td>⚠️ 可能锁多行或整表</td>
+<td>因全表扫描</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>✅ <strong>结论</strong>：只要 <code>id</code> 是主键（InnoDB 聚簇索引），<strong>只会锁一行，不会锁表</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="四、最佳实践总结"><a href="#四、最佳实践总结" class="headerlink" title="四、最佳实践总结"></a>四、最佳实践总结</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐隔离级别</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通 Web API、CRUD</td>
+<td><code>READ COMMITTED</code></td>
+<td>✅ 最平衡</td>
+</tr>
+<tr>
+<td>金融对账、报表</td>
+<td><code>REPEATABLE READ</code></td>
+<td>✅ 保证读一致性</td>
+</tr>
+<tr>
+<td>极高一致性 + 低并发</td>
+<td><code>SERIALIZABLE</code></td>
+<td>⚠️ 谨慎使用</td>
+</tr>
+<tr>
+<td>监控/日志（容忍错误）</td>
+<td><code>READ UNCOMMITTED</code></td>
+<td>🚫 避免用于业务逻辑</td>
+</tr>
+<tr>
+<td>防并发修改</td>
+<td>显式加锁 or 原子 SQL</td>
+<td><code>UPDATE ... WHERE version = ?</code> 或 <code>FOR UPDATE</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Spring-Boot-设置方式"><a href="#Spring-Boot-设置方式" class="headerlink" title="Spring Boot 设置方式"></a>Spring Boot 设置方式</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span><span class="token annotation punctuation">@Service</span>
+<span class="token number">2</span>public <span class="token keyword">class</span> <span class="token class-name">AccountService</span> <span class="token punctuation">&#123;</span>
+<span class="token number">3</span>
+<span class="token number">4</span>    <span class="token comment">// 读已提交（推荐大多数场景）</span>
+<span class="token number">5</span>    <span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>READ_COMMITTED<span class="token punctuation">)</span>
+<span class="token number">6</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">transfer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">/* ... */</span> <span class="token punctuation">&#125;</span>
+<span class="token number">7</span>
+<span class="token number">8</span>    <span class="token comment">// 可重复读（MySQL 默认，适合对账）</span>
+<span class="token number">9</span>    <span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>REPEATABLE_READ<span class="token punctuation">)</span>
+<span class="token number">10</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">generateReport</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">/* ... */</span> <span class="token punctuation">&#125;</span>
+<span class="token number">11</span>
+<span class="token number">12</span>    <span class="token comment">// 串行化（慎用！）</span>
+<span class="token number">13</span>    <span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>isolation <span class="token operator">=</span> <span class="token class-name">Isolation</span><span class="token punctuation">.</span>SERIALIZABLE<span class="token punctuation">)</span>
+<span class="token number">14</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">criticalAdjust</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">/* ... */</span> <span class="token punctuation">&#125;</span>
+<span class="token number">15</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="Donate" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hand-coin-line"></use></svg></span><div id="reward-comment">给个饭钱？</div><div id="qr" style="display:none;"><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/J2Sv6rVeLtAPiHx.jpg"><img loading="lazy" src="https://i.loli.net/2020/12/23/J2Sv6rVeLtAPiHx.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-alipay-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/4rBXF1deMD6KyN8.png"><img loading="lazy" src="https://i.loli.net/2020/12/23/4rBXF1deMD6KyN8.png" alt="QQ 支付" title="QQ 支付"></a><div><span style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://i.loli.net/2020/12/23/XvirFV3o6GyRMZU.png"><img loading="lazy" src="https://i.loli.net/2020/12/23/XvirFV3o6GyRMZU.png" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-pay-line"></use></svg></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>Post author: </strong>Sovzn</li><li class="post-copyright-link"><strong>Post link: </strong><a href="http://sovzn.github.io/2026/01/20/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" title="隔离级别">http://sovzn.github.io/2026/01/20/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</a></li><li class="post-copyright-license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> unless otherwise stated.</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2026/01/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%8C%E9%94%81/" rel="prev" title="数据库行锁"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">数据库行锁</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2025/11/16/Nginx/" rel="next" title="Nginx"><span class="post-nav-text">Nginx</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/YunYouJun/yunyoujun.github.io/issues?q=is:issue+隔离级别">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2026 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Sovzn</span></div><div class="live_time"><span>本博客已运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-04-12T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#6200ee" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="Search"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="Searching..." value=""></div><div id="local-search-result"></div></div></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
